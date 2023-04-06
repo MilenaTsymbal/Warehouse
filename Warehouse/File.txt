@@ -16,5 +16,3 @@ peaches,kg,45 uah/kg,3000,06.04.2023 0:15:45
 flour,kg,25 uah/kg,2000,06.04.2023 13:17:56
 eggs,piece,2 uah/piece,3000,06.04.2023 14:55:30
 motebook,piece,200 uah/piece,1000,06.04.2023 14:05:00
-jfdjh,jhdhj,10 uah/djcf,40000,06.04.2023 14:57:30
-kcd,dsj,166 us,200,06.04.2023 14:57:00
