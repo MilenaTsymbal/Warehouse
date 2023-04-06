@@ -1,0 +1,20 @@
+ice cream,pack,10 uah/pack,100,01.01.0001 00:00:00
+potato,kg,10 uah/kg,100,01.04.2023 23:39:19
+bananas,kg,10 uah/kg,100,01.04.2023 23:44:15
+marshrooms,kg,10 uah/kg,100,01.04.2023 23:45:25
+crisps,pack,10 uah/pack,100,02.04.2023 12:45:45
+tea,pack,10 uah/pack,100,01.05.2023 0:00:00
+chocolate,pack,10 uah/pack,100,02.07.2023 0:00:00
+chickens,carcass,50 uah/carcass,1000,29.12.2023 6:45:45
+cookies,pack,20 uah/pack,1000,01.01.0001 0:00:00
+cheese,kg,250 uah/kg,1000,01.01.0001 0:00:00
+milk,liters,25 uah/l,1000,01.01.0001 0:00:00
+vinegar,liters,20 uah/liter,3000,05.04.2023 23:01:45
+buns,kg,10 uah/kg,250,05.04.2023 23:04:10
+apples,kg,25 uah/kg,2000,05.04.2023 23:35:30
+peaches,kg,45 uah/kg,3000,06.04.2023 0:15:45
+flour,kg,25 uah/kg,2000,06.04.2023 13:17:56
+eggs,piece,2 uah/piece,3000,06.04.2023 14:55:30
+motebook,piece,200 uah/piece,1000,06.04.2023 14:05:00
+jfdjh,jhdhj,10 uah/djcf,40000,06.04.2023 14:57:30
+kcd,dsj,166 us,200,06.04.2023 14:57:00
