@@ -9,54 +9,15 @@ using System.Threading.Tasks;
 
 namespace Warehouse
 {
-    internal class MyList : List<Goods>
+    public class MyList : List<Goods>
     {
-        public void AddExistingGoods()
+        public MyList()
         {
-            string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\File.txt";
-
-            string[] lines = File.ReadAllLines(filePath);
-
-            foreach (string line in lines)
-            {
-                string[] values = line.Split(',');
-
-                Goods newProduct = new Goods(values[0], values[1], values[2], values[3], DateTime.Parse(values[4]));
-                Add(newProduct);
-            }
+            new FileWork().AddExistingGoods(this);
+            Program.WorkingWithTheProgram(this);
         }
 
-        public void AddNewGoodsToFile()
-        {
-            string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\File.txt";
-
-            int lastLineNumber = File.ReadLines(filePath).Count();
-
-            using (StreamWriter writer = new StreamWriter(filePath, true))
-            {
-                for (int i = lastLineNumber; i < Count; i++)
-                {
-                    /*string arrayString = allProducts[i].NameOfGood + "," + allProducts[i].UnitOfMeasure + "," + allProducts[i].UnitPrice + "," + allProducts[i].Amount + "," + allProducts[i].DateOfLastDelivery;*/
-                    string arrayString = string.Join(",", this[i].NameOfGood, this[i].UnitOfMeasure, this[i].UnitPrice, this[i].Amount, this[i].DateOfLastDelivery);
-                    writer.WriteLine(arrayString);
-                }
-            }
-        }
-
-        public void RewritegoodsInFile()
-        {
-            string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\File.txt";
-
-            using (StreamWriter writer = new StreamWriter(filePath, false))
-            {
-                for (int i = 0; i < Count; i++)
-                {
-                    /*string arrayString = allProducts[i].NameOfGood + "," + allProducts[i].UnitOfMeasure + "," + allProducts[i].UnitPrice + "," + allProducts[i].Amount + "," + allProducts[i].DateOfLastDelivery;*/
-                    string arrayString = string.Join(",", this[i].NameOfGood, this[i].UnitOfMeasure, this[i].UnitPrice, this[i].Amount, this[i].DateOfLastDelivery);
-                    writer.WriteLine(arrayString);
-                }
-            }
-        }
+        
 
         public void AddNewGoods()
         {
@@ -102,115 +63,14 @@ namespace Warehouse
             }
             Console.WriteLine();
 
-            AddNewGoodsToFile();
+            FileWork.AddNewGoodsToFile(this);
 
-            ProfitAndLossStatement(lastItem);
+            Print.ProfitAndLossStatement(this, lastItem);
         }
 
-        public void ProfitAndLossStatement(int lastItem)
+        public void EditGood()
         {
-            int count = 1;
-
-            Console.WriteLine("\t\t\t\tProfit and Loss Statement\n");
-            Console.WriteLine("| {0,-6} | {1,-14} | {2,-15} | {3,-14} | {4,-6} |{5,-21} |",
-                "Number", "Name of a good", "Unit of measure", "Unit of price", "Amount", "Date of last delivery");
-
-            for (int i = lastItem; i < Count; i++)
-            {
-                Console.WriteLine("| {0,-6} | {1,-14} | {2,-15} | {3,-14} | {4,-6} |{5,-21:d} |",
-                    count++,
-                    this[i].NameOfGood,
-                    this[i].UnitOfMeasure,
-                    this[i].UnitPrice,
-                    this[i].Amount,
-                    this[i].DateOfLastDelivery);
-            }
-            Console.WriteLine();
-            Console.WriteLine($"Total sum: {TotalSumOfNewGoods(lastItem)} uah");
-        }
-
-        public void ListOfAllGoods()
-        {
-            Console.WriteLine("\t\t\t\t\tList of all goods\n");
-            Console.WriteLine("| {0,-6} | {1,-14} | {2,-15} | {3,-14} | {4,-6} |{5,-21} |",
-                "Number", "Name of a good", "Unit of measure", "Unit of price", "Amount", "Date of last delivery");
-
-            for (int i = 0; i < Count; i++)
-            {
-                Console.WriteLine("| {0,-6} | {1,-14} | {2,-15} | {3,-14} | {4,-6} |{5,-21:d} |",
-                    i + 1,
-                    this[i].NameOfGood,
-                    this[i].UnitOfMeasure,
-                    this[i].UnitPrice,
-                    this[i].Amount,
-                    this[i].DateOfLastDelivery);
-            }
-            Console.WriteLine();
-            Console.WriteLine($"Total sum: {TotalSumOfNewGoods()} uah");
-        }
-
-        public void ListOfDeletedGoods(List<Goods> deletedGoods)
-        {
-            Console.WriteLine("\t\t\t\t\tList of deleted goods\n");
-            Console.WriteLine("| {0,-6} | {1,-14} | {2,-15} | {3,-14} | {4,-6} |{5,-21} |",
-                "Number", "Name of a good", "Unit of measure", "Unit of price", "Amount", "Date of last delivery");
-
-            for (int i = 0; i < deletedGoods.Count; i++)
-            {
-                Console.WriteLine("| {0,-6} | {1,-14} | {2,-15} | {3,-14} | {4,-6} |{5,-21:d} |",
-                    i + 1,
-                    deletedGoods[i].NameOfGood,
-                    deletedGoods[i].UnitOfMeasure,
-                    deletedGoods[i].UnitPrice,
-                    deletedGoods[i].Amount,
-                    deletedGoods[i].DateOfLastDelivery);
-            }
-            Console.WriteLine();
-            Console.WriteLine($"Total sum: {TotalSumOfNewGoods()} uah");
-        }
-
-        public int TotalSumOfNewGoods(int lastItem)
-        {
-            int totalSum = 0;
-
-            for (int i = lastItem; i < Count; i++)
-            {
-                string[] parts = this[i].UnitPrice.Split(' ');
-                totalSum += int.Parse(parts[0]) * int.Parse(this[i].Amount);
-            }
-
-            return totalSum;
-        }
-
-        public int TotalSumOfNewGoods()
-        {
-            int totalSum = 0;
-
-            foreach (Goods product in this)
-            {
-                string[] parts = product.UnitPrice.Split(' ');
-                totalSum += int.Parse(parts[0]) * int.Parse(product.Amount);
-            }
-
-            return totalSum;
-        }
-
-        public int TotalSumOfNewGoods(List<Goods> deletedGoods)
-        {
-            int totalSum = 0;
-
-            foreach (Goods product in deletedGoods)
-            {
-                string[] parts = product.UnitPrice.Split(' ');
-                totalSum += int.Parse(parts[0]) * int.Parse(product.Amount);
-            }
-
-            return totalSum;
-        }
-
-        public void EditGoodInfo()
-        {
-            ListOfAllGoods();
+            Print.ListOfAllGoods(this);
 
             int amountOfGoodsForChange = Validator.GetTheValidationInt("\nEnter the number of goods that will be changed: ");
             int indexOfGood = 0;
@@ -246,12 +106,32 @@ namespace Warehouse
 
             }
 
-            RewritegoodsInFile();
+            FileWork.RewriteGoodsInFile(this);
+
+            List<int> SortList(List<int> list)
+            {
+                int temp = 0;
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    for (int j = 0; j < list.Count - 1 - i; j++)
+                    {
+                        if (list[j] > list[j + 1])
+                        {
+                            temp = list[j + 1];
+                            list[j + 1] = list[j];
+                            list[j] = temp;
+                        }
+                    }
+                }
+                return list;
+            }
         }
 
         public void DeleteGoods()
         {
-            ListOfAllGoods();
+            Print.ListOfAllGoods(this);
+
             List<Goods> deletedGoods = new List<Goods>();
 
             int amountOfGoodsForChange = Validator.GetTheValidationInt("\nEnter the number of goods that will be deleted: ");
@@ -264,27 +144,8 @@ namespace Warehouse
                 RemoveAt(indexOfGood - 1);
             }
 
-            ListOfDeletedGoods(deletedGoods);
-            RewritegoodsInFile();
-        }
-
-        public List<int> SortList(List<int> list)
-        {
-            int temp = 0;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                for (int j = 0; j < list.Count - 1 - i; j++)
-                {
-                    if (list[j] > list[j + 1])
-                    {
-                        temp = list[j + 1];
-                        list[j + 1] = list[j];
-                        list[j] = temp;
-                    }
-                }
-            }
-            return list;
+            Print.ListOfDeletedGoods(deletedGoods);
+            FileWork.RewriteGoodsInFile(this);
         }
 
     }

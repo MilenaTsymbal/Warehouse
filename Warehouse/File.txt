@@ -1,7 +1,9 @@
-ice-cream,pack,15 uah/pack,100,01.01.0001 0:00:00
+ice cream,pack,15 uah/pack,100,01.01.0001 0:00:00
 potato,kg,10 uah/kg,100,01.04.2023 23:39:19
 bananas,kg,10 uah/kg,100,01.04.2023 23:44:15
 marshrooms,kg,10 uah/kg,100,01.04.2023 23:45:25
 pencil,pack,100 uah/piece,100,01.05.2023 0:00:00
 chocolate,pack,10 uah/pack,100,02.07.2023 0:00:00
 cookies,pack,20 uah/pack,1000,01.01.0001 0:00:00
+hand cream,pack,150 uah/pack,4000,11.04.2023 20:18:40
+soup,pack,35 uah/pack,150,11.04.2023 21:24:40
