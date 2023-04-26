@@ -13,14 +13,17 @@ namespace Warehouse
         public new string? NameOfGood { get; set; }
         public new string? UnitOfMeasure { get; set; }
         public new string? UnitPrice { get; set; }
-        public new int? Amount { get; set; }
-        public new string? DateOfLastDelivery { get; set; }
+        public int? AmountFrom { get; set; }
+        public int? AmountTo { get; set; }
+        public string? DateOfLastDeliveryFrom { get; set; }
+        public string? DateOfLastDeliveryTo { get; set; }
         public string? Size { get; set; }
         public string? Color { get; set; }
         public string? Brand { get; set; }
         public string? Model { get; set; }
         public string? Company { get; set; }
-        public string? ExpiryDate { get; set; }
+        public string? ExpiryDateFrom { get; set; }
+        public string? ExpiryDateTo { get; set; }
 
 
         /* public FindGoods(string category, string nameOfGood, string unitOfMeasure, string unitPrice, int amount, string dateOfLastDelivery, string expiryDate)

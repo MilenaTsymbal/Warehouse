@@ -1,4 +1,7 @@
-﻿namespace Warehouse
+﻿using System.Drawing;
+using System.Reflection;
+
+namespace Warehouse
 {
     public class Warehouse : List<Good>
     {
@@ -254,7 +257,80 @@
         }
 
 
-        
+        public FindGoods CharacteristicsForFindingGoods()
+        {
+            Console.WriteLine("\nChoose the type of product out of these:\n-Food\n-Drinks\n-Clothing\n-Shoes\n-Electronics");
+
+            string category = Validator.GetTheValidationType("\nEnter the name of the type of the product: ");
+
+            string nameOfGood = Validator.GetTheValidationInput("\nEnter the name of the good: ", s => s, allowNullInput: true);
+
+            string unitOfMeasure = Validator.GetTheValidationInput("Write unit of measure of a good: ", s => s, allowNullInput: true);
+
+            string unitPrice = Validator.GetTheValidationInput("Write unit of price of a good: ", s => s, allowNullInput: true);
+
+            int amount = Validator.GetTheValidationInput("Write amount of delivered goods: ", int.Parse, allowNullInput: true);
+
+            string dateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", s => s, allowNullInput: true);
+
+            string expiryDate = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format yyyy-MM-dd):  ", s => s, allowNullInput: true);
+
+            string size = Validator.GetTheValidationSizeNull("Enter the size of the product: ");
+
+            string color = Validator.GetTheValidationInput("Enter the color of the product: ", s => s, allowNullInput: true);
+
+            string brand = Validator.GetTheValidationInput("Enter the name of the brand of the product: ", s => s, allowNullInput: true);
+
+            string model = Validator.GetTheValidationInput("Enter the name of the model of the product: ", s => s, allowNullInput: true);
+
+            string company = Validator.GetTheValidationInput("Enter the name of the company that produces this product: "
+                , s => s, allowNullInput: true);
+
+            return new FindGoods(category, nameOfGood, unitOfMeasure, unitPrice, amount, dateOfLastDelivery, expiryDate, size, color, brand, model, company);
+
+        }
+
+       /* public void FindGoodsByCharacteristics()
+        {
+            List<Good> results = new List<Good>();
+            FindGoods characteristics = CharacteristicsForFindingGoods();
+
+            foreach(Good good in this)
+            {
+                if(good is Food food)
+                {
+                    //category, nameOfGood, unitOfMeasure, unitPrice, amount, dateOfLastDelivery, expiryDate, size, color, brand, model, company
+                    if ((characteristics.Category == null || characteristics.Category == food.Category)
+                    &&(characteristics.NameOfGood == null || characteristics.NameOfGood == food.NameOfGood)
+                    &&(characteristics.UnitOfMeasure == null || characteristics.UnitOfMeasure == food.UnitOfMeasure)
+                    &&(characteristics.UnitPrice == null || characteristics.UnitPrice == food.UnitPrice)
+                    &&(characteristics.Amount == null || )
+                        )
+                }
+            }*/
+            /*foreach (Good good in lines)
+            {
+                string[] fields = line.Split(',');
+                Car car = new Car(int.Parse(fields[0]), fields[1], int.Parse(fields[2]), fields[3], fields[4], fields[5], int.Parse(fields[6]), int.Parse(fields[7]));
+
+
+                if ((brand == "" || car.Brand == brand)
+                    && (yearFrom == 0 || car.Year >= yearFrom)
+                    && (yearTo == 0 || car.Year <= yearTo)
+                    && (model == "" || car.Model == model)
+                    && (color == "" || car.Color == color)
+                    && (condition == "" || car.Condition == condition)
+                    && (priceFrom == 0 || car.Price >= priceFrom)
+                    && (priceTo == 0 || car.Price <= priceTo)
+                    && (numberOfDoors == 0 || car.NumberOfDoors == numberOfDoors))
+                {
+                    matchingCars.Add(car);
+                }
+            }*/
+
+            /*   Print.PrintGoods(results, "Finded goods");*/
+        //}
+
         private List<int> SortList(List<int> list)
         {
             int temp = 0;
