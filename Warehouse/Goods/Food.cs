@@ -4,7 +4,7 @@
     {
         public string ExpiryDate { get; set; }
 
-        public Food(string category, string nameOfGood, string unitOfMeasure, string unitPrice, int amount, string expiryDate, string dateOfLastDelivery)
+        public Food(string category, string nameOfGood, string unitOfMeasure, int unitPrice, int amount, string expiryDate, string dateOfLastDelivery)
             : base(category, nameOfGood, unitOfMeasure, unitPrice, amount, dateOfLastDelivery)
         {
             ExpiryDate = expiryDate;

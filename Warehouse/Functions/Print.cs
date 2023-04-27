@@ -12,7 +12,7 @@ namespace Warehouse
     {
         public static void PrintGoods<T>(Warehouse goods, string title, List<Good>? totalSumOfGood = null) where T : Good
         {
-            Console.WriteLine($"\n\t\t\t\t\t{title}\n");
+            Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
             int counter = 1;
             var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
         "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
@@ -29,7 +29,7 @@ namespace Warehouse
                         item is Electronics electronicsModel ? electronicsModel.Model : "",
                         item is Electronics electronicsCompany ? electronicsCompany.Company : "",
                         item.UnitOfMeasure,
-                        item.UnitPrice,
+                        $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
                         item.Amount,
                         item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate : "",
                         item.DateOfLastDelivery);
@@ -58,7 +58,7 @@ namespace Warehouse
                     counter++,
                     food.NameOfGood,
                     food.UnitOfMeasure,
-                    food.UnitPrice,
+                    $"{food.UnitPrice} uah/{food.UnitOfMeasure}",
                     food.Amount,
                     food.ExpiryDate,
                     food.DateOfLastDelivery);
@@ -73,7 +73,7 @@ namespace Warehouse
                     clothing.Color,
                     clothing.Brand,
                     clothing.UnitOfMeasure,
-                    clothing.UnitPrice,
+                    $"{clothing.UnitPrice} uah/{clothing.UnitOfMeasure}",
                     clothing.Amount,
                     clothing.DateOfLastDelivery);
                     totalSumOfGood.Add(clothing);
@@ -86,7 +86,7 @@ namespace Warehouse
                     electronics.Model,
                     electronics.Company,
                     electronics.UnitOfMeasure,
-                    electronics.UnitPrice,
+                    $"{electronics.UnitPrice} uah/{electronics.UnitOfMeasure}",
                     electronics.Amount,
                     electronics.DateOfLastDelivery);
                     totalSumOfGood.Add(electronics);

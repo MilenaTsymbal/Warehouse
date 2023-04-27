@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Text;
-using Warehouse.Goods;
 
 namespace Warehouse
 {
@@ -47,7 +46,7 @@ namespace Warehouse
                             Print.WayOfPrinting(goods);
                             break;
                         case "5":
-                            /*goods.FindGood();*/
+                            goods.FindGoods();
                             break;
                         case "6":
                             Print.IncomeInvoice(incomeInvoice);

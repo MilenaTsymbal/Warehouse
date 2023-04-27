@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,44 +10,6 @@ namespace Warehouse
 {
     internal class Validator
     {
-       /* static public T GetTheValidationInput<T>(string message, Func<string, T> parser, Func<T, bool>? validator = null)
-        {
-            while (true)
-            {
-                Console.Write(message);
-                string? input = Console.ReadLine();
-
-                if (input != null)
-                {
-                    try
-                    {
-                        T result = parser(input);
-
-                        if (validator == null || validator(result))
-                        {
-                            return result;
-                        }
-                        else
-                        {
-                            Message(ConsoleColor.Red, $"\nInvalid input. The entered {typeof(T).Name.ToLower()} is not valid.\n");
-                        }
-                    }
-                    catch (FormatException)
-                    {
-                        Message(ConsoleColor.Red, $"\nInvalid input. Please enter a valid {typeof(T).Name.ToLower()} value. Try to rewrite it.\n");
-                    }
-                    catch (OverflowException)
-                    {
-                        Message(ConsoleColor.Red, $"\nInvalid input. The entered {typeof(T).Name.ToLower()} value is too large or too small.\n");
-                    }
-                }
-                else
-                {
-                    Message(ConsoleColor.Red, "\nInvalid input, nothing was written. Try to rewrite it.\n");
-                }
-            }
-        }*/
-
         static public T GetTheValidationInput<T>(string message, Func<string, T> parser, Func<T, bool>? validator = null, bool allowNullInput = false)
         {
             while (true)
@@ -54,12 +17,9 @@ namespace Warehouse
                 Console.Write(message);
                 string? input = Console.ReadLine();
 
-                if (allowNullInput && input == null)
+                if (allowNullInput && string.IsNullOrWhiteSpace(input))
                 {
-                    if (typeof(T) == typeof(string))
-                    {
-                        return (T)(object)"";
-                    }
+                    return GetDefaultValue<T>();
                 }
 
                 try
@@ -86,6 +46,25 @@ namespace Warehouse
             }
         }
 
+        static T GetDefaultValue<T>()
+        {
+            if (typeof(T) == typeof(string))
+            {
+                return (T)(object)"";
+            }
+            else if (typeof(T) == typeof(int))
+            {
+                return (T)(object)0;
+            }
+            else if (typeof(T) == typeof(DateTime))
+            {
+                return (T)(object)DateTime.MinValue;
+            }
+            else
+            {
+                return default!;
+            }
+        }
 
         static public List<int> GetTheValidationElements(string message)
         {
@@ -107,7 +86,7 @@ namespace Warehouse
         }
         static public int GetTheValidationNumber(string message)
         {
-            string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods.txt";
+            string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods\Goods.txt";
 
             int lastLineNumber = File.ReadLines(filePath).Count();
 
@@ -123,6 +102,14 @@ namespace Warehouse
             {
                 return input;
             }, HasTheType);
+        }
+
+        static public string GetTheValidationTypeForFinding(string message)
+        {
+            return GetTheValidationInput(message, input =>
+            {
+                return input;
+            }, HasTheType, allowNullInput: true);
         }
 
         static public string GetTheValidationSize(string message)

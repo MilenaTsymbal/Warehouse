@@ -5,11 +5,11 @@
         public string Category { get; set; }
         public string NameOfGood { get; set; }
         public string UnitOfMeasure { get; set; }
-        public string UnitPrice { get; set; }
+        public int UnitPrice { get; set; }
         public int Amount { get; set; }
         public string DateOfLastDelivery { get; set; }
 
-        public Good(string category, string nameOfGood, string unitOfMeasure, string unitPrice, int amount, string dateOfLastDelivery)
+        public Good(string category, string nameOfGood, string unitOfMeasure, int unitPrice, int amount, string dateOfLastDelivery)
         {
             Category = category;
             NameOfGood = nameOfGood;

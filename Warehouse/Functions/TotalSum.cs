@@ -14,8 +14,7 @@ namespace Warehouse
 
             foreach (Good good in goods)
             {
-                string[] price = good.UnitPrice.Split(' ');
-                totalSum += int.Parse(price[0]) * good.Amount;
+                totalSum += good.UnitPrice * good.Amount;
             }
 
             return totalSum;
