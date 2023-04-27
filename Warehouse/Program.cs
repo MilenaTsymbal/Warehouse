@@ -8,15 +8,15 @@ namespace Warehouse
         static void Main(string[] args)
         {
             Warehouse goods = new Warehouse();
-            Invoice incomeInvoice = new Invoice();
-            Invoice expenceInvoice = new Invoice();
+            Invoice allIncomeInvoice = new Invoice();
+            Invoice allExpenceInvoice = new Invoice();
 
             FileWork.AddExistingGoods(goods);
-            WorkingWithTheProgram(goods, incomeInvoice, expenceInvoice);
+            WorkingWithTheProgram(goods, allIncomeInvoice, allExpenceInvoice);
 
         }
 
-        public static void WorkingWithTheProgram(Warehouse goods, Invoice incomeInvoice, Invoice expenceInvoice)
+        public static void WorkingWithTheProgram(Warehouse goods, Invoice allIncomeInvoice, Invoice allExpenceInvoice)
         {
            /* goods.FindGood();*/
 
@@ -33,13 +33,13 @@ namespace Warehouse
                     switch (command)
                     {
                         case "1":
-                            goods.AddNewGoods(incomeInvoice);
+                            goods.AddNewGoods(allIncomeInvoice);
                             break;
                         case "2":
                             goods.EditGood();
                             break;
                         case "3":
-                            goods.DeleteGoods(expenceInvoice);
+                            goods.DeleteGoods(allExpenceInvoice);
                             break;
                         case "4":
                             /*Print.ListOfAllGoods(goods);*/
@@ -49,10 +49,10 @@ namespace Warehouse
                             goods.FindGoods();
                             break;
                         case "6":
-                            Print.IncomeInvoice(incomeInvoice);
+                            Print.IncomeInvoice(allIncomeInvoice);
                             break;
                         case "7":
-                            Print.ExpenceInvoice(expenceInvoice);
+                            Print.ExpenceInvoice(allExpenceInvoice);
                             break;
                         case "exit":
                             return;

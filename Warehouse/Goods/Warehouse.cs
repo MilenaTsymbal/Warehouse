@@ -12,7 +12,7 @@ namespace Warehouse
             goods = new List<Good?>();
         }
 
-        public void AddNewGoods(Invoice incomeInvoice)
+        public void AddNewGoods(Invoice allIncomeInvoice)
         {
             Warehouse addedGoods = new Warehouse();
             int lastItem = Count;
@@ -29,8 +29,11 @@ namespace Warehouse
             Console.WriteLine();
 
             FileWork.AddNewGoodsToFile(this);
-
-            incomeInvoice.Add(addedGoods);
+            Invoice incomeInvoice = new Invoice
+            {
+                addedGoods
+            };
+            allIncomeInvoice.Add(addedGoods);
             Print.IncomeInvoice(incomeInvoice);
         }
 
@@ -84,10 +87,11 @@ namespace Warehouse
                 int indexOfGood = Validator.GetTheValidationNumber($"\nEnter the number of a good ({i + 1}/{amountOfGoodsForChange}) that you want to change: ");
 
                 EditGoodCharacteristics(indexOfGood);
+                editedGoods.Add(this[indexOfGood - 1]);
             }
 
             FileWork.RewriteGoodsInFile(this);
-            Print.ListAfetrEditing(this);
+            Print.ListAfetrEditing(editedGoods);
         }
 
         private void EditGoodCharacteristics(int indexOfGood)
@@ -196,7 +200,7 @@ namespace Warehouse
         }
 
 
-        public void DeleteGoods(Invoice expenseInvoice)
+        public void DeleteGoods(Invoice allExpenceInvoice)
         {
             Print.ListOfAllGoods(this);
             Warehouse deletedGoods = new Warehouse();
@@ -221,8 +225,12 @@ namespace Warehouse
                 }
             }
 
-            expenseInvoice.Add(deletedGoods);
-            Print.PrintInvoice(expenseInvoice, "Expense invoice");
+            Invoice expenceInvoice = new Invoice
+            {
+                deletedGoods
+            };
+            allExpenceInvoice.Add(deletedGoods);
+            Print.ExpenceInvoice(expenceInvoice);
             FileWork.RewriteGoodsInFile(this);
         }
 
@@ -256,6 +264,7 @@ namespace Warehouse
             deletedGoods[deletedGoods.Count - 1].Amount = amountForDeletion;
         }
 
+
         public void FindGoods()
         {
             Warehouse foundGoods = new Warehouse();
@@ -268,10 +277,10 @@ namespace Warehouse
                     foundGoods.Add(good);
                 }
             }
-            Print.PrintGoods<Good>(foundGoods, "Finded goods");
+            Print.ListOfFindedGoods(foundGoods);
         }
 
-        public FindGoods CharacteristicsForFindingGoods()
+        private FindGoods CharacteristicsForFindingGoods()
         {
             Console.WriteLine("\nChoose the type of product out of these:\n-Food\n-Drinks\n-Clothing\n-Shoes\n-Electronics");
 
@@ -297,7 +306,7 @@ namespace Warehouse
 
         }
 
-        public bool IsGoodMatchingCriteria(Good good, FindGoods findGoods)
+        private bool IsGoodMatchingCriteria(Good good, FindGoods findGoods)
         {
             if ((findGoods.NameOfGood == "" || good.NameOfGood!.ToLower().Contains(findGoods.NameOfGood.ToLower()))
                 && (findGoods.Category == "" || good.Category!.ToLower().Contains(findGoods.Category.ToLower()))
@@ -321,6 +330,7 @@ namespace Warehouse
             return false;
         }
         
+
         private List<int> SortList(List<int> list)
         {
             int temp = 0;

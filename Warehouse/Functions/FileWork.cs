@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,8 @@ namespace Warehouse
 {
     public class FileWork
     {
-        private static string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods\Goods.txt";
+        //AccessFile accessFileOfCars = AccessFile.GetAccessToFile("CarDB.txt", "..\..\..\MainFunctions\CarFunctions");
+        private static string filePath = @"..\..\..\Goods\Goods.txt";
         public static void AddExistingGoods(Warehouse allGoods)
         {
             try

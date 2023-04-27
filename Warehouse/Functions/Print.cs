@@ -10,9 +10,13 @@ namespace Warehouse
 {
     internal class Print
     {
-        public static void PrintGoods<T>(Warehouse goods, string title, List<Good>? totalSumOfGood = null) where T : Good
+        public static void PrintGoods<T>(Warehouse goods, string title, DateTime? dateOfMakingInvoice = null, List<Good>? totalSumOfGood = null) where T : Good
         {
             Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
+            if(dateOfMakingInvoice != null)
+            {
+                Console.WriteLine($"\n\t\t\t\t\t\t\t{dateOfMakingInvoice}\n");
+            }
             int counter = 1;
             var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
         "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
@@ -99,16 +103,16 @@ namespace Warehouse
         public static void PrintInvoice(Invoice invoice, string title)//all invoices
         {
             invoice.dateOfMakingInvoice = DateTime.Now;
-            Console.WriteLine($"\n\t\t\t\t\t{title}\n");
-            Console.WriteLine($"\n\t\t\t\t\t{invoice.dateOfMakingInvoice}\n");
             
             foreach (Warehouse warehouse in invoice)
             {
-                PrintGoods<Good>(warehouse, $"Invoice {invoice.ToList().IndexOf(warehouse) + 1}");
+                PrintGoods<Good>(warehouse, $"Invoice {invoice.ToList().IndexOf(warehouse) + 1}", invoice.dateOfMakingInvoice);
             }
         }
 
-        public static void WayOfPrinting(Warehouse allGoods)
+        public delegate void GoodsPrinter(Warehouse allGoods);
+
+        public static void WayOfPrinting(Warehouse allGoods, GoodsPrinter? printFunction = null)
         {
             Console.WriteLine("\n\nChoose the way of printing goods:\n\n1.Print list with all goods together\n\n2.Print goods divided into categories");
             Console.Write("\nEnter chosen option: ");
@@ -121,7 +125,14 @@ namespace Warehouse
                 switch (input)
                 {
                     case "1":
-                        ListOfAllGoods(allGoods);
+                        if (printFunction == null)
+                        {
+                            ListOfAllGoods(allGoods);
+                        }
+                        else
+                        {
+                            printFunction(allGoods);
+                        }
                         isValid = true;
                         break;
                     case "2":
@@ -155,10 +166,6 @@ namespace Warehouse
             PrintCategoryOfGoods<Electronics>(headerForElectronics, allGoods, "Electronics", new List<Good>());
         }
 
-        public static void ListOfAllGoods(Warehouse allGoods)
-        {
-            PrintGoods<Good>(allGoods, "List of all goods");
-        }
         public static void IncomeInvoice(Invoice incomeInvoice)
         {
             PrintInvoice(incomeInvoice, "Income invoice");
@@ -168,18 +175,22 @@ namespace Warehouse
         {
             PrintInvoice(expenceInvoice, "Expence invoice");
         }
-        public static void ListOfDeletedGoods(Invoice expenceInvoice)
+
+        public static void ListOfAllGoods(Warehouse allGoods)
         {
-            PrintInvoice(expenceInvoice, "Expence invoice");
+            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "List of all goods"));
         }
+
         public static void ListAfetrEditing(Warehouse allGoods)
         {
-            PrintGoods<Good>(allGoods, "Goods after editing");
+
+            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Goods after editing"));
         }
-        /* public static void ListOfFindedGoods(Warehouse allGoods)
-         {
-             PrintGoods(allGoods, "Finded goods");
-         }*/
+
+        public static void ListOfFindedGoods(Warehouse allGoods)
+        {
+            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Finded goods"));
+        }
 
         public static void Message(ConsoleColor color, string message)
         {
