@@ -10,7 +10,7 @@ namespace Warehouse
     public class FileWork
     {
         //AccessFile accessFileOfCars = AccessFile.GetAccessToFile("CarDB.txt", "..\..\..\MainFunctions\CarFunctions");
-        private static string filePath = @"..\..\..\Goods\Goods.txt";
+        private static string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods\Goods.txt";
         public static void AddExistingGoods(Warehouse allGoods)
         {
             try

@@ -96,13 +96,15 @@ namespace Warehouse
 
         private void EditGoodCharacteristics(int indexOfGood)
         {
-            List<int> characteristics = new List<int>();
+            List<int> characterList = new List<int>();
 
             if (this[indexOfGood - 1] is Food food)
             {
                 Console.WriteLine("\nThere are all the characteristics that you can change:\n" +
                 "1. Name of a good\n2. Unit of measure\n3. Unit of price\n4. Amount\n5. Expiry date\n6. Date of last delivery\n");
-                characteristics = SortList(Validator.GetTheValidationElements("Enter the number / numbers of characteristic / characteristics that you want to change: \n"));
+                characterList = Validator.GetTheValidationElements("Enter the number / numbers of characteristic / characteristics that you want to change: \n");
+                
+                var characteristics = characterList.OrderBy(x => x);
 
                 foreach (int item in characteristics)
                 {
@@ -133,8 +135,9 @@ namespace Warehouse
             {
                 Console.WriteLine("\nThere are all the characteristics that you can change:\n" +
        "1. Name of a good\n2. Size\n3. Brand\n4. Unit of measure\n5. Unit of price\n6. Amount\n7. Date of last delivery\n");
-                characteristics = SortList(Validator.GetTheValidationElements("Enter the number / numbers of characteristic / characteristics that you want to change: \n"));
+                characterList = Validator.GetTheValidationElements("Enter the number / numbers of characteristic / characteristics that you want to change: \n");
 
+                var characteristics = characterList.OrderBy(x => x);
                 foreach (int item in characteristics)
                 {
                     switch (item)
@@ -167,8 +170,9 @@ namespace Warehouse
             {
                 Console.WriteLine("\nThere are all the characteristics that you can change:\n" +
         "1. Name of a good\n2. Model\n3. Company\n4. Unit of measure\n5. Unit of price\n6. Amount\n7. Date of last delivery\n");
-                characteristics = SortList(Validator.GetTheValidationElements("Enter the number / numbers of characteristic / characteristics that you want to change: \n"));
+                characterList = Validator.GetTheValidationElements("Enter the number / numbers of characteristic / characteristics that you want to change: \n");
 
+                var characteristics = characterList.OrderBy(x => x);
                 foreach (int item in characteristics)
                 {
                     switch (item)
@@ -283,34 +287,34 @@ namespace Warehouse
         private FindGoods CharacteristicsForFindingGoods()
         {
             Console.WriteLine("\nChoose the type of product out of these:\n-Food\n-Drinks\n-Clothing\n-Shoes\n-Electronics");
-
-            string category = Validator.GetTheValidationTypeForFinding("\nEnter the name of the type of the product: ");
-            string nameOfGood = Validator.GetTheValidationInput("\nEnter the name of the good: ", s => s, allowNullInput: true);
-            string unitOfMeasure = Validator.GetTheValidationInput("Write unit of measure of a good: ", s => s, allowNullInput: true);
-            int unitPriceFrom = Validator.GetTheValidationInput("Write unit of price of a good(from): ", int.Parse, allowNullInput: true);
-            int unitPriceTo = Validator.GetTheValidationInput("Write unit of price of a good(to): ", int.Parse, allowNullInput: true);
-            int amountFrom = Validator.GetTheValidationInput("Write amount of delivered goods(from): ", int.Parse, allowNullInput: true);
-            int amountTo = Validator.GetTheValidationInput("Write amount of delivered goods(to): ", int.Parse, allowNullInput: true);
-            DateTime dateOfLastDeliveryFrom = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss)(from): ", DateTime.Parse, allowNullInput: true);
-            DateTime dateOfLastDeliveryTo = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss)(to): ", DateTime.Parse, allowNullInput: true);
-            DateTime expiryDateFrom = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(from):  ", DateTime.Parse, allowNullInput: true);
-            DateTime expiryDateTo = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(to):  ", DateTime.Parse, allowNullInput: true);
-            string size = Validator.GetTheValidationSizeNull("Enter the size of the product: ");
-            string color = Validator.GetTheValidationInput("Enter the color of the product: ", s => s, allowNullInput: true);
-            string brand = Validator.GetTheValidationInput("Enter the name of the brand of the product: ", s => s, allowNullInput: true);
-            string model = Validator.GetTheValidationInput("Enter the name of the model of the product: ", s => s, allowNullInput: true);
-            string company = Validator.GetTheValidationInput("Enter the name of the company that produces this product: "
+            FindGoods findgoods = new FindGoods();
+            findgoods.Category = Validator.GetTheValidationTypeForFinding("\nEnter the name of the type of the product: ");
+            findgoods.NameOfGood = Validator.GetTheValidationInput("\nEnter the name of the good: ", s => s, allowNullInput: true);
+            findgoods.UnitOfMeasure = Validator.GetTheValidationInput("Write unit of measure of a good: ", s => s, allowNullInput: true);
+            findgoods.UnitPriceFrom = Validator.GetTheValidationInput("Write unit of price of a good(from): ", int.Parse, allowNullInput: true);
+            findgoods.UnitPriceTo = Validator.GetTheValidationInput("Write unit of price of a good(to): ", int.Parse, allowNullInput: true);
+            findgoods.AmountFrom = Validator.GetTheValidationInput("Write amount of delivered goods(from): ", int.Parse, allowNullInput: true);
+            findgoods.AmountTo = Validator.GetTheValidationInput("Write amount of delivered goods(to): ", int.Parse, allowNullInput: true);
+            findgoods.DateOfLastDeliveryFrom = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss)(from): ", DateTime.Parse, allowNullInput: true);
+            findgoods.DateOfLastDeliveryTo = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss)(to): ", DateTime.Parse, allowNullInput: true);
+            findgoods.ExpiryDateFrom = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(from):  ", DateTime.Parse, allowNullInput: true);
+            findgoods.ExpiryDateTo = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(to):  ", DateTime.Parse, allowNullInput: true);
+            findgoods.Size = Validator.GetTheValidationSizeNull("Enter the size of the product: ");
+            findgoods.Color = Validator.GetTheValidationInput("Enter the color of the product: ", s => s, allowNullInput: true);
+            findgoods.Brand = Validator.GetTheValidationInput("Enter the name of the brand of the product: ", s => s, allowNullInput: true);
+            findgoods.Model = Validator.GetTheValidationInput("Enter the name of the model of the product: ", s => s, allowNullInput: true);
+            findgoods.Company = Validator.GetTheValidationInput("Enter the name of the company that produces this product: "
                 , s => s, allowNullInput: true);
 
-            return new FindGoods(category, nameOfGood, unitOfMeasure, unitPriceFrom, unitPriceTo, amountFrom, amountTo, dateOfLastDeliveryFrom, dateOfLastDeliveryTo, expiryDateFrom, expiryDateTo, size, color, brand, model, company);
+            return findgoods;
 
         }
 
         private bool IsGoodMatchingCriteria(Good good, FindGoods findGoods)
         {
-            if ((findGoods.NameOfGood == "" || good.NameOfGood!.ToLower().Contains(findGoods.NameOfGood.ToLower()))
-                && (findGoods.Category == "" || good.Category!.ToLower().Contains(findGoods.Category.ToLower()))
-                && (findGoods.UnitOfMeasure == "" || good.UnitOfMeasure!.ToLower().Contains(findGoods.UnitOfMeasure.ToLower()))
+            if ((findGoods.NameOfGood == "" || good.NameOfGood!.ToLower().Contains(findGoods.NameOfGood!.ToLower()))
+                && (findGoods.Category == "" || good.Category!.ToLower().Contains(findGoods.Category!.ToLower()))
+                && (findGoods.UnitOfMeasure == "" || good.UnitOfMeasure!.ToLower().Contains(findGoods.UnitOfMeasure!.ToLower()))
                 && (findGoods.UnitPriceFrom == 0 || findGoods.UnitPriceFrom <= good.UnitPrice)
                 && (findGoods.UnitPriceTo == 0 || findGoods.UnitPriceTo >= good.UnitPrice)
                 && (findGoods.AmountFrom == 0 || findGoods.AmountFrom <= good.Amount)
@@ -319,35 +323,15 @@ namespace Warehouse
                 && (findGoods.DateOfLastDeliveryTo == DateTime.MinValue || findGoods.DateOfLastDeliveryTo >= DateTime.Parse(good.DateOfLastDelivery))
                 && (findGoods.ExpiryDateFrom == DateTime.MinValue || (good is Food foodExpiryDateFrom && findGoods.ExpiryDateFrom <= DateTime.Parse(foodExpiryDateFrom.ExpiryDate)))
                 && (findGoods.ExpiryDateTo == DateTime.MinValue || (good is Food foodExpiryDateTo && findGoods.ExpiryDateTo >= DateTime.Parse(foodExpiryDateTo.ExpiryDate)))
-                && (findGoods.Size == "" || (good is Clothing clothingSize && clothingSize.Size!.ToLower().Contains(findGoods.Size.ToLower())))
-                && (findGoods.Color == "" || (good is Clothing clothingColor && clothingColor.Color!.ToLower().Contains(findGoods.Color.ToLower())))
-                && (findGoods.Brand == "" || (good is Clothing clothingBrand && clothingBrand.Brand!.ToLower().Contains(findGoods.Brand.ToLower())))
-                && (findGoods.Model == "" || (good is Electronics electronicsModel && electronicsModel.Model!.ToLower().Contains(findGoods.Model.ToLower())))
-                && (findGoods.Company == "" || (good is Electronics electronicsCompany && electronicsCompany.Company!.ToLower().Contains(findGoods.Company.ToLower()))))
+                && (findGoods.Size == "" || (good is Clothing clothingSize && clothingSize.Size!.ToLower().Contains(findGoods.Size!.ToLower())))
+                && (findGoods.Color == "" || (good is Clothing clothingColor && clothingColor.Color!.ToLower().Contains(findGoods.Color!.ToLower())))
+                && (findGoods.Brand == "" || (good is Clothing clothingBrand && clothingBrand.Brand!.ToLower().Contains(findGoods.Brand!.ToLower())))
+                && (findGoods.Model == "" || (good is Electronics electronicsModel && electronicsModel.Model!.ToLower().Contains(findGoods.Model!.ToLower())))
+                && (findGoods.Company == "" || (good is Electronics electronicsCompany && electronicsCompany.Company!.ToLower().Contains(findGoods.Company!.ToLower()))))
             {
                 return true;
             }
             return false;
-        }
-        
-
-        private List<int> SortList(List<int> list)
-        {
-            int temp = 0;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                for (int j = 0; j < list.Count - 1 - i; j++)
-                {
-                    if (list[j] > list[j + 1])
-                    {
-                        temp = list[j + 1];
-                        list[j + 1] = list[j];
-                        list[j] = temp;
-                    }
-                }
-            }
-            return list;
         }
 
     }

@@ -18,8 +18,6 @@ namespace Warehouse
 
         public static void WorkingWithTheProgram(Warehouse goods, Invoice allIncomeInvoice, Invoice allExpenceInvoice)
         {
-           /* goods.FindGood();*/
-
             while (true)
             {
                 Print.Message(ConsoleColor.Yellow, "\nChoose the command out of these: \n\n1.Add new goods\n\n2.Edit Goods\n\n3.Delete goods" +
@@ -42,8 +40,7 @@ namespace Warehouse
                             goods.DeleteGoods(allExpenceInvoice);
                             break;
                         case "4":
-                            /*Print.ListOfAllGoods(goods);*/
-                            Print.WayOfPrinting(goods);
+                            Print.ListOfAllGoods(goods);
                             break;
                         case "5":
                             goods.FindGoods();

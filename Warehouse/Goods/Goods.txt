@@ -8,8 +8,5 @@ footwear,trainers,m,white,LV,pair,150,5000,11.04.2023 20:18:40
 food,soup,pack,35,1500,08.08.2023,11.04.2023 21:24:40
 electronics,телефон,IPhoneXR,Apple,piece,12000,10000,11.04.2023 21:24:40
 food,pancakes,pack,50,2500,01.12.2023,18.04.2023 0:00:00
-food,fdj,fbt,3,32,gf,fv
-food,fd,gb,3,43,f,fd
-food,gfb,fd,54,7654,gfb,gb
-food,gf,gfs,43,5454,gbf,gbf
-food,fg,fg,34,433,fg,gf
+clothing,thhg,s,fdhuyfd,ghg,ghgh,54,563,ghgghgh
+food,fg,gfh,5,5,gfgx,fgx

@@ -102,11 +102,11 @@ namespace Warehouse
 
         public static void PrintInvoice(Invoice invoice, string title)//all invoices
         {
-            invoice.dateOfMakingInvoice = DateTime.Now;
+            invoice.DateOfMakingInvoice = DateTime.Now;
             
             foreach (Warehouse warehouse in invoice)
             {
-                PrintGoods<Good>(warehouse, $"Invoice {invoice.ToList().IndexOf(warehouse) + 1}", invoice.dateOfMakingInvoice);
+                PrintGoods<Good>(warehouse, $"Invoice {invoice.ToList().IndexOf(warehouse) + 1}", invoice.DateOfMakingInvoice);
             }
         }
 
