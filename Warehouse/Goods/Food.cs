@@ -2,9 +2,9 @@
 {
     public class Food : Good
     {
-        public string ExpiryDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
 
-        public Food(string category, string nameOfGood, string unitOfMeasure, int unitPrice, int amount, string expiryDate, string dateOfLastDelivery)
+        public Food(string category, string nameOfGood, string unitOfMeasure, int unitPrice, int amount, DateTime expiryDate, DateTime dateOfLastDelivery)
             : base(category, nameOfGood, unitOfMeasure, unitPrice, amount, dateOfLastDelivery)
         {
             ExpiryDate = expiryDate;

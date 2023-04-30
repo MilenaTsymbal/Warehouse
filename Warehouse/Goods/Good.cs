@@ -7,9 +7,9 @@
         public string UnitOfMeasure { get; set; }
         public int UnitPrice { get; set; }
         public int Amount { get; set; }
-        public string DateOfLastDelivery { get; set; }
+        public DateTime DateOfLastDelivery { get; set; }
 
-        public Good(string category, string nameOfGood, string unitOfMeasure, int unitPrice, int amount, string dateOfLastDelivery)
+        public Good(string category, string nameOfGood, string unitOfMeasure, int unitPrice, int amount, DateTime dateOfLastDelivery)
         {
             Category = category;
             NameOfGood = nameOfGood;

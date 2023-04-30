@@ -7,16 +7,19 @@ namespace Warehouse
     {
         static void Main(string[] args)
         {
-            Warehouse goods = new Warehouse();
-            Invoice allIncomeInvoice = new Invoice();
-            Invoice allExpenceInvoice = new Invoice();
+            BaseOfInvoices incomeInvoices = new BaseOfInvoices();
+            FileWork.AddExistingIncomeInvoices(incomeInvoices);
 
+            BaseOfInvoices expenceInvoices = new BaseOfInvoices();
+            FileWork.AddExistingExpenceInvoices(expenceInvoices);
+
+            Warehouse goods = new Warehouse();
             FileWork.AddExistingGoods(goods);
-            WorkingWithTheProgram(goods, allIncomeInvoice, allExpenceInvoice);
+            WorkingWithTheProgram(goods, incomeInvoices, expenceInvoices);
 
         }
 
-        public static void WorkingWithTheProgram(Warehouse goods, Invoice allIncomeInvoice, Invoice allExpenceInvoice)
+        public static void WorkingWithTheProgram(Warehouse goods, BaseOfInvoices incomeInvoices, BaseOfInvoices expenceInvoices)
         {
             while (true)
             {
@@ -31,13 +34,13 @@ namespace Warehouse
                     switch (command)
                     {
                         case "1":
-                            goods.AddNewGoods(allIncomeInvoice);
+                            goods.AddNewGoods(incomeInvoices);
                             break;
                         case "2":
                             goods.EditGood();
                             break;
                         case "3":
-                            goods.DeleteGoods(allExpenceInvoice);
+                            goods.DeleteGoods(expenceInvoices);
                             break;
                         case "4":
                             Print.ListOfAllGoods(goods);
@@ -46,10 +49,10 @@ namespace Warehouse
                             goods.FindGoods();
                             break;
                         case "6":
-                            Print.IncomeInvoice(allIncomeInvoice);
+                            Print.IncomeInvoices(incomeInvoices);
                             break;
                         case "7":
-                            Print.ExpenceInvoice(allExpenceInvoice);
+                            Print.ExpenceInvoices(expenceInvoices);
                             break;
                         case "exit":
                             return;

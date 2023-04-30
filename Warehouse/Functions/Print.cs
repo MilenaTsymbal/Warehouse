@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -10,12 +11,47 @@ namespace Warehouse
 {
     internal class Print
     {
+        public delegate void GoodsPrinter(Warehouse allGoods);
+        public static void WayOfPrinting(Warehouse allGoods, GoodsPrinter? printFunction = null)
+        {
+            Console.WriteLine("\n\nChoose the way of printing goods:\n\n1.Print list with all goods together\n\n2.Print goods divided into categories");
+            Console.Write("\nEnter chosen option: ");
+
+            string? input = Console.ReadLine();
+            bool isValid = false;
+
+            while (!isValid)
+            {
+                switch (input)
+                {
+                    case "1":
+                        if(printFunction != null)
+                        {
+                            printFunction(allGoods);
+                        }
+                        isValid = true;
+                        break;
+                    case "2":
+                        PrintFood(allGoods);
+                        PrintClothing(allGoods);
+                        PrintElectronics(allGoods);
+                        isValid = true;
+                        break;
+                    default:
+                        Message(ConsoleColor.Red, "\nThere is no option like this one. Try to rewrite it.");
+                        WayOfPrinting(allGoods);
+                        break;
+                }
+            }
+        }
+
+
         public static void PrintGoods<T>(Warehouse goods, string title, DateTime? dateOfMakingInvoice = null, List<Good>? totalSumOfGood = null) where T : Good
         {
             Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
             if(dateOfMakingInvoice != null)
             {
-                Console.WriteLine($"\n\t\t\t\t\t\t\t{dateOfMakingInvoice}\n");
+                Console.WriteLine($"\n\t\t\t\t\t\t\t\t{dateOfMakingInvoice}\n");
             }
             int counter = 1;
             var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
@@ -35,7 +71,7 @@ namespace Warehouse
                         item.UnitOfMeasure,
                         $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
                         item.Amount,
-                        item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate : "",
+                        item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate.ToShortDateString() : "",
                         item.DateOfLastDelivery);
 
                 if (totalSumOfGood != null)
@@ -46,6 +82,7 @@ namespace Warehouse
             Console.Write(table.ToString());
             Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah");
         }
+
 
         public static void PrintCategoryOfGoods<T>(string[] header, Warehouse goods, string title, List<Good> totalSumOfGood) where T : Good
         {
@@ -64,7 +101,7 @@ namespace Warehouse
                     food.UnitOfMeasure,
                     $"{food.UnitPrice} uah/{food.UnitOfMeasure}",
                     food.Amount,
-                    food.ExpiryDate,
+                    food.ExpiryDate.ToShortDateString(),
                     food.DateOfLastDelivery);
                     totalSumOfGood.Add(food);
                 }
@@ -97,68 +134,24 @@ namespace Warehouse
                 }
             }
             Console.Write(table.ToString());
-            Console.WriteLine($"\nTotal sum: {TotalSum.CalculateTotalSum(totalSumOfGood)} uah");
+            Console.WriteLine($"\n\nTotal sum: {TotalSum.CalculateTotalSum(totalSumOfGood)} uah");
         }
+        
 
-        public static void PrintInvoice(Invoice invoice, string title)//all invoices
-        {
-            invoice.DateOfMakingInvoice = DateTime.Now;
-            
-            foreach (Warehouse warehouse in invoice)
-            {
-                PrintGoods<Good>(warehouse, $"Invoice {invoice.ToList().IndexOf(warehouse) + 1}", invoice.DateOfMakingInvoice);
-            }
-        }
-
-        public delegate void GoodsPrinter(Warehouse allGoods);
-
-        public static void WayOfPrinting(Warehouse allGoods, GoodsPrinter? printFunction = null)
-        {
-            Console.WriteLine("\n\nChoose the way of printing goods:\n\n1.Print list with all goods together\n\n2.Print goods divided into categories");
-            Console.Write("\nEnter chosen option: ");
-
-            string? input = Console.ReadLine();
-            bool isValid = false;
-
-            while (!isValid)
-            {
-                switch (input)
-                {
-                    case "1":
-                        if (printFunction == null)
-                        {
-                            ListOfAllGoods(allGoods);
-                        }
-                        else
-                        {
-                            printFunction(allGoods);
-                        }
-                        isValid = true;
-                        break;
-                    case "2":
-                        PrintFood(allGoods);
-                        PrintClothing(allGoods);
-                        PrintElectronics(allGoods);
-                        isValid = true;
-                        break;
-                    default:
-                        Console.WriteLine("There is no option like this one. Try to rewrite it.");
-                        break;
-                }
-            }
-        }
         public static void PrintFood(Warehouse allGoods)
         {
             string[] headerForFood = {"№", "Name of a good", "Unit of measure", "Unit of price", "Amount",
                 "Expiry date", "Date of last delivery"};
             PrintCategoryOfGoods<Food>(headerForFood, allGoods, "Food", new List<Good>());
         }
+        
         public static void PrintClothing(Warehouse allGoods)
         {
             string[] headerForClothing = {"№", "Name of a good", "Size", "Color", "Brand", "Unit of measure", "Unit of price",
                 "Amount", "Date of last delivery"};
             PrintCategoryOfGoods<Clothing>(headerForClothing, allGoods, "Clothing", new List<Good>());
         }
+        
         public static void PrintElectronics(Warehouse allGoods)
         {
             string[] headerForElectronics = { "№", "Name of a good", "Model", "Company", "Unit of measure", "Unit of price",
@@ -166,15 +159,6 @@ namespace Warehouse
             PrintCategoryOfGoods<Electronics>(headerForElectronics, allGoods, "Electronics", new List<Good>());
         }
 
-        public static void IncomeInvoice(Invoice incomeInvoice)
-        {
-            PrintInvoice(incomeInvoice, "Income invoice");
-        }
-
-        public static void ExpenceInvoice(Invoice expenceInvoice)
-        {
-            PrintInvoice(expenceInvoice, "Expence invoice");
-        }
 
         public static void ListOfAllGoods(Warehouse allGoods)
         {
@@ -192,6 +176,45 @@ namespace Warehouse
             WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Finded goods"));
         }
 
+
+        private static void PrintInvoice(Invoice invoice, string title)
+        {
+            invoice.DateOfMakingInvoice = DateTime.Now;
+
+            PrintGoods<Good>(invoice, $"{title} {invoice.NumberOfInvoice}");
+        }
+
+        public static void IncomeInvoice(Invoice invoice)
+        {
+            PrintInvoice(invoice, "Income invoice");
+        }
+
+        public static void ExpenceInvoice(Invoice invoice)
+        {
+            PrintInvoice(invoice, "Expence invoice");
+        }
+
+
+
+        private static void PrintInvoices(BaseOfInvoices invoices, string title)//all invoices
+        {
+            foreach (Invoice invoice in invoices)
+            {
+                PrintGoods<Good>(invoice, $"{title} {invoice.NumberOfInvoice}", invoice.DateOfMakingInvoice);
+            }
+        }
+
+        public static void IncomeInvoices(BaseOfInvoices incomeInvoice)
+        {
+            PrintInvoices(incomeInvoice, "Income invoice");
+        }
+
+        public static void ExpenceInvoices(BaseOfInvoices expenceInvoice)
+        {
+            PrintInvoices(expenceInvoice, "Expence invoice");
+        }
+
+       
         public static void Message(ConsoleColor color, string message)
         {
             Console.ForegroundColor = color;

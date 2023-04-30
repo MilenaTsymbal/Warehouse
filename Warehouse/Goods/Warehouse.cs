@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace Warehouse
 {
@@ -12,9 +13,10 @@ namespace Warehouse
             goods = new List<Good?>();
         }
 
-        public void AddNewGoods(Invoice allIncomeInvoice)
+        public void AddNewGoods(BaseOfInvoices incomeInvoices)
         {
-            Warehouse addedGoods = new Warehouse();
+            Invoice addedGoods = new Invoice();
+            addedGoods.NumberOfInvoice = FileWork.CountIncomeInvoices() + 1;
             int lastItem = Count;
 
             int numberOfNewProducts = Validator.GetTheValidationInput("\nEnter the number of goods you want to add: ", int.Parse);
@@ -29,12 +31,9 @@ namespace Warehouse
             Console.WriteLine();
 
             FileWork.AddNewGoodsToFile(this);
-            Invoice incomeInvoice = new Invoice
-            {
-                addedGoods
-            };
-            allIncomeInvoice.Add(addedGoods);
-            Print.IncomeInvoice(incomeInvoice);
+            FileWork.AddNewIncomeInvoice(addedGoods);
+            incomeInvoices.Add(addedGoods);
+            Print.IncomeInvoice(addedGoods);
         }
 
         private Good CreateNewGood()
@@ -50,13 +49,13 @@ namespace Warehouse
 
             int amount = Validator.GetTheValidationInput("Write amount of delivered goods: ", int.Parse);
 
-            string dateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", s => s);
+            DateTime dateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", DateTime.Parse);
 
             switch (category)
             {
                 case "food":
                 case "drinks":
-                    string expiryDate = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format yyyy-MM-dd):  ", s => s);
+                    DateTime expiryDate = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy):  ", DateTime.Parse);
                     return new Food(category, nameOfGood, unitOfMeasure, unitPrice, amount, expiryDate, dateOfLastDelivery);
                 case "clothing":
                 case "footwear":
@@ -123,10 +122,10 @@ namespace Warehouse
                             food.Amount = Validator.GetTheValidationInput("Write amount of delivered goods: ", int.Parse);
                             break;
                         case 5:
-                            food.ExpiryDate = Validator.GetTheValidationInput("Write expiry date of this good (in format dd.mm.yyyy): ", s => s);
+                            food.ExpiryDate = Validator.GetTheValidationInput("Write expiry date of this good (in format dd.mm.yyyy): ", DateTime.Parse);
                             break;
                         case 6:
-                            food.DateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", s => s);
+                            food.DateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", DateTime.Parse);
                             break;
                     }
                 }
@@ -161,7 +160,7 @@ namespace Warehouse
                             clothing.Amount = Validator.GetTheValidationInput("Write amount of delivered goods: ", int.Parse);
                             break;
                         case 7:
-                            clothing.DateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", s => s);
+                            clothing.DateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", DateTime.Parse);
                             break;
                     }
                 }
@@ -196,7 +195,7 @@ namespace Warehouse
                             electronics.Amount = Validator.GetTheValidationInput("Write amount of delivered goods: ", int.Parse);
                             break;
                         case 7:
-                            electronics.DateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", s => s);
+                            electronics.DateOfLastDelivery = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ", DateTime.Parse);
                             break;
                     }
                 }
@@ -204,10 +203,11 @@ namespace Warehouse
         }
 
 
-        public void DeleteGoods(Invoice allExpenceInvoice)
+        public void DeleteGoods(BaseOfInvoices expenceInvoices)
         {
             Print.ListOfAllGoods(this);
-            Warehouse deletedGoods = new Warehouse();
+            Invoice deletedGoods = new Invoice();
+            deletedGoods.NumberOfInvoice = FileWork.CountExpenceInvoices() + 1;
 
             int amountOfGoodsForDeletion = Validator.GetTheValidationNumber("\nEnter numbers of goods that will be deleted: ");
 
@@ -229,12 +229,9 @@ namespace Warehouse
                 }
             }
 
-            Invoice expenceInvoice = new Invoice
-            {
-                deletedGoods
-            };
-            allExpenceInvoice.Add(deletedGoods);
-            Print.ExpenceInvoice(expenceInvoice);
+            expenceInvoices.Add(deletedGoods);
+            Print.ExpenceInvoice(deletedGoods);
+            FileWork.AddNewExpenceInvoice(deletedGoods);
             FileWork.RewriteGoodsInFile(this);
         }
 
@@ -299,7 +296,7 @@ namespace Warehouse
             findgoods.DateOfLastDeliveryTo = Validator.GetTheValidationInput("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss)(to): ", DateTime.Parse, allowNullInput: true);
             findgoods.ExpiryDateFrom = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(from):  ", DateTime.Parse, allowNullInput: true);
             findgoods.ExpiryDateTo = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(to):  ", DateTime.Parse, allowNullInput: true);
-            findgoods.Size = Validator.GetTheValidationSizeNull("Enter the size of the product: ");
+            findgoods.Size = Validator.GetTheValidationSizeForFinding("Enter the size of the product: ");
             findgoods.Color = Validator.GetTheValidationInput("Enter the color of the product: ", s => s, allowNullInput: true);
             findgoods.Brand = Validator.GetTheValidationInput("Enter the name of the brand of the product: ", s => s, allowNullInput: true);
             findgoods.Model = Validator.GetTheValidationInput("Enter the name of the model of the product: ", s => s, allowNullInput: true);
@@ -319,10 +316,10 @@ namespace Warehouse
                 && (findGoods.UnitPriceTo == 0 || findGoods.UnitPriceTo >= good.UnitPrice)
                 && (findGoods.AmountFrom == 0 || findGoods.AmountFrom <= good.Amount)
                 && (findGoods.AmountTo == 0 || findGoods.AmountTo >= good.Amount)
-                && (findGoods.DateOfLastDeliveryFrom == DateTime.MinValue || findGoods.DateOfLastDeliveryFrom <= DateTime.Parse(good.DateOfLastDelivery))
-                && (findGoods.DateOfLastDeliveryTo == DateTime.MinValue || findGoods.DateOfLastDeliveryTo >= DateTime.Parse(good.DateOfLastDelivery))
-                && (findGoods.ExpiryDateFrom == DateTime.MinValue || (good is Food foodExpiryDateFrom && findGoods.ExpiryDateFrom <= DateTime.Parse(foodExpiryDateFrom.ExpiryDate)))
-                && (findGoods.ExpiryDateTo == DateTime.MinValue || (good is Food foodExpiryDateTo && findGoods.ExpiryDateTo >= DateTime.Parse(foodExpiryDateTo.ExpiryDate)))
+                && (findGoods.DateOfLastDeliveryFrom == DateTime.MinValue || findGoods.DateOfLastDeliveryFrom <= good.DateOfLastDelivery)
+                && (findGoods.DateOfLastDeliveryTo == DateTime.MinValue || findGoods.DateOfLastDeliveryTo >= good.DateOfLastDelivery)
+                && (findGoods.ExpiryDateFrom == DateTime.MinValue || (good is Food foodExpiryDateFrom && findGoods.ExpiryDateFrom <= foodExpiryDateFrom.ExpiryDate))
+                && (findGoods.ExpiryDateTo == DateTime.MinValue || (good is Food foodExpiryDateTo && findGoods.ExpiryDateTo >= foodExpiryDateTo.ExpiryDate))
                 && (findGoods.Size == "" || (good is Clothing clothingSize && clothingSize.Size!.ToLower().Contains(findGoods.Size!.ToLower())))
                 && (findGoods.Color == "" || (good is Clothing clothingColor && clothingColor.Color!.ToLower().Contains(findGoods.Color!.ToLower())))
                 && (findGoods.Brand == "" || (good is Clothing clothingBrand && clothingBrand.Brand!.ToLower().Contains(findGoods.Brand!.ToLower())))

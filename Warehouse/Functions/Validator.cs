@@ -76,6 +76,16 @@ namespace Warehouse
                 return !HasDuplicates(elements);
             });
         }
+      /*  static public DateTime GetTheValidationDateTime(string message)
+        {
+            return GetTheValidationInput(message, input =>
+            {
+                if (DateTime.TryParse(input, out DateTime result))
+                {
+                    return result;
+                }
+            });
+        }*/
 
         static public int GetTheValidationAmountForDeletion(string message, Good good)
         {
@@ -84,6 +94,7 @@ namespace Warehouse
                 return userInput >= 1 && userInput <= good.Amount;
             });
         }
+
         static public int GetTheValidationNumber(string message)
         {
             string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods\Goods.txt";
@@ -120,7 +131,7 @@ namespace Warehouse
             }, HasTheSize);
         }
 
-        static public string GetTheValidationSizeNull(string message)
+        static public string GetTheValidationSizeForFinding(string message)
         {
             return GetTheValidationInput(message, input =>
             {

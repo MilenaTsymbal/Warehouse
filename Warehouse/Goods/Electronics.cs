@@ -5,7 +5,7 @@
         public string Model { get; set; }
         public string Company { get; set; }
 
-        public Electronics(string category, string nameOfGood, string model, string company, string unitOfMeasure, int unitPrice, int amount, string dateOfLastDelivery) 
+        public Electronics(string category, string nameOfGood, string model, string company, string unitOfMeasure, int unitPrice, int amount, DateTime dateOfLastDelivery) 
             : base(category, nameOfGood, unitOfMeasure, unitPrice, amount, dateOfLastDelivery)
         {
             Model = model;

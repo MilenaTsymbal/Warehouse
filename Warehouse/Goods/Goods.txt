@@ -1,12 +1,11 @@
-food,ice cream,pack,15,800,12.04.2023,01.01.0001 0:00:00
-food,potato,kg,10,2500,08.08.2023,01.04.2023 23:39:19
-food,bananas,kg,10,5000,08.08.2023,01.04.2023 23:44:15
-clothes,T-shirt,s,black,LV,piece,100,9000,01.05.2023 0:00:00
-food,chocolate,pack,10,6000,08.08.2023,02.07.2023 0:00:00
-food,cookies,pack,20,3000,08.08.2023,01.01.0001 0:00:00
+food,ice cream,pack,15,800,12.04.2023 0:00:00,01.01.0001 0:00:00
+food,potato,kg,10,2000,08.08.2023 0:00:00,01.04.2023 23:39:19
+food,bananas,kg,10,5000,08.08.2023 0:00:00,01.04.2023 23:44:15
+clothes,T-shirt,s,black,LV,piece,100,7500,01.05.2023 0:00:00
+food,chocolate,pack,10,6000,08.08.2023 0:00:00,02.07.2023 0:00:00
+food,cookies,pack,20,2000,08.08.2023 0:00:00,01.01.0001 0:00:00
 footwear,trainers,m,white,LV,pair,150,5000,11.04.2023 20:18:40
-food,soup,pack,35,1500,08.08.2023,11.04.2023 21:24:40
-electronics,телефон,IPhoneXR,Apple,piece,12000,10000,11.04.2023 21:24:40
-food,pancakes,pack,50,2500,01.12.2023,18.04.2023 0:00:00
-clothing,thhg,s,fdhuyfd,ghg,ghgh,54,563,ghgghgh
-food,fg,gfh,5,5,gfgx,fgx
+food,soup,pack,35,1500,08.08.2023 0:00:00,11.04.2023 21:24:40
+electronics,molibe-phone,IPhoneXR,Apple,piece,12000,8000,11.04.2023 21:24:40
+food,pancakes,pack,50,2500,01.12.2023 0:00:00,18.04.2023 0:00:00
+food,ff,fd,43,43,30.06.2023 0:00:00,30.04.2023 20:55:00
