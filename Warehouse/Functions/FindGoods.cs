@@ -12,8 +12,8 @@ namespace Warehouse
         public string? Category { get; set; }
         public string? NameOfGood { get; set; }
         public string? UnitOfMeasure { get; set; }
-        public int UnitPriceFrom { get; set; }
-        public int UnitPriceTo { get; set; }
+        public double UnitPriceFrom { get; set; }
+        public double UnitPriceTo { get; set; }
         public int AmountFrom { get; set; }
         public int AmountTo { get; set; }
         public DateTime DateOfLastDeliveryFrom { get; set; }
@@ -26,26 +26,26 @@ namespace Warehouse
         public DateTime ExpiryDateFrom { get; set; }
         public DateTime ExpiryDateTo { get; set; }
 
-      /*  public FindGoods(string category, string nameOfGood, string unitOfMeasure, int unitPriceFrom, int unitPriceTo, 
-            int amountFrom, int amountTo, DateTime dateOfLastDeliveryFrom, DateTime dateOfLastDeliveryTo, DateTime expiryDateFrom, 
-            DateTime expiryDateTo, string size, string color, string brand, string model, string company)
+        public void CharacteristicsForFindingGoods()
         {
-            Category = category;
-            NameOfGood = nameOfGood;
-            UnitOfMeasure = unitOfMeasure;
-            UnitPriceFrom = unitPriceFrom;
-            UnitPriceTo = unitPriceTo;
-            AmountFrom = amountFrom;
-            AmountTo = amountTo;
-            DateOfLastDeliveryFrom = dateOfLastDeliveryFrom;
-            DateOfLastDeliveryTo = dateOfLastDeliveryTo;
-            ExpiryDateFrom = expiryDateFrom;
-            ExpiryDateTo = expiryDateTo;
-            Size = size;
-            Color = color;
-            Brand = brand;
-            Model = model;
-            Company = company;
-        }*/
+            Console.WriteLine("\nChoose the type of product out of these:\n-Food\n-Clothing\n-Electronics");
+            Category = Validator.GetTheValidationType("\nEnter the name of the type of the product: ", allowNullInput: true);
+            NameOfGood = Validator.GetTheValidationGoodCharacteristic("Enter the name of the good: ", allowNullInput: true);
+            UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Write unit of measure of a good: ", allowNullInput: true);
+            UnitPriceFrom = Validator.GetTheValidationUnitPrice("Write unit of price of a good(from): ", allowNullInput: true);
+            UnitPriceTo = Validator.GetTheValidationUnitPrice("Write unit of price of a good(to): ", allowNullInput: true);
+            AmountFrom = Validator.GetTheValidationAmount("Write amount of delivered goods(from): ", allowNullInput: true);
+            AmountTo = Validator.GetTheValidationInput("Write amount of delivered goods(to): ", int.Parse, allowNullInput: true);
+            DateOfLastDeliveryFrom = Validator.GetTheValidationDateTime("Write date and time of last delivery of a good (in format dd.mm.yyyy hh:mm:ss)(from): ", allowNullInput: true);
+            DateOfLastDeliveryTo = Validator.GetTheValidationDateTime("Enter date and time of last delivery of a good (in the format dd.mm.yyyy)(to): ", allowNullInput: true);
+            ExpiryDateFrom = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(from):  ", DateTime.Parse, allowNullInput: true);
+            ExpiryDateTo = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy)(to): ", DateTime.Parse, allowNullInput: true);
+            Size = Validator.GetTheValidationSize("Enter the size of the product: ", allowNullInput: true);
+            Color = Validator.GetTheValidationGoodCharacteristic("Enter the color of the product: ", allowNullInput: true);
+            Brand = Validator.GetTheValidationGoodCharacteristic("Enter the name of the brand of the product: ", allowNullInput: true);
+            Model = Validator.GetTheValidationGoodCharacteristic("Enter the name of the model of the product: ", allowNullInput: true);
+            Company = Validator.GetTheValidationGoodCharacteristic("Enter the name of the company that produces this product: ", allowNullInput: true);
+        }
+
     }
 }

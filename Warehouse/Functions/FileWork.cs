@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
@@ -9,10 +10,10 @@ namespace Warehouse
 {
     public class FileWork
     {
-        //AccessFile accessFileOfCars = AccessFile.GetAccessToFile("CarDB.txt", "..\..\..\MainFunctions\CarFunctions");
-        private static string filePathToGoods = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods\Goods.txt";
-        private static string filePathToIncomeInvoices = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Invoices\IncomeInvoices.txt";
-        private static string filePathToExpenceInvoices = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Invoices\ExpenceInvoices.txt";
+        private static readonly string filePathToGoods = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Database\Goods.txt";
+        private static readonly string filePathToIncomeInvoices = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Database\IncomeInvoices.txt";
+        private static readonly string filePathToExpenceInvoices = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Database\ExpenceInvoices.txt";
+
         public static void AddExistingGoods(Warehouse allGoods)
         {
             try
@@ -26,15 +27,13 @@ namespace Warehouse
                     switch (values[0])
                     {
                         case "food":
-                        case "drinks":
-                            allGoods.Add(new Food(values[0], values[1], values[2], int.Parse(values[3]), int.Parse(values[4]), DateTime.Parse(values[5]), DateTime.Parse(values[6])));
+                            allGoods.Add(new Food(values[0], values[1], values[2], double.Parse(values[3], CultureInfo.InvariantCulture), int.Parse(values[4]), DateTime.Parse(values[5]), DateTime.Parse(values[6])));
                             break;
-                        case "clothes":
-                        case "footwear":
-                            allGoods.Add(new Clothing(values[0], values[1], values[2], values[3], values[4], values[5], int.Parse(values[6]), int.Parse(values[7]), DateTime.Parse(values[8])));
+                        case "clothing":
+                            allGoods.Add(new Clothing(values[0], values[1], values[2], values[3], values[4], values[5], double.Parse(values[6], CultureInfo.InvariantCulture), int.Parse(values[7]), DateTime.Parse(values[8])));
                             break;
                         case "electronics":
-                            allGoods.Add(new Electronics(values[0], values[1], values[2], values[3], values[4], int.Parse(values[5]), int.Parse(values[6]), DateTime.Parse(values[7])));
+                            allGoods.Add(new Electronics(values[0], values[1], values[2], values[3], values[4], double.Parse(values[5], CultureInfo.InvariantCulture), int.Parse(values[6]), DateTime.Parse(values[7])));
                             break;
                     }
                 }
@@ -44,6 +43,7 @@ namespace Warehouse
                 Console.WriteLine($"An error occurred while reading the file: {e.Message}");
             }
         }
+
 
         public static void AddNewGoodsToFile(Warehouse allGoods)
         {
@@ -79,20 +79,26 @@ namespace Warehouse
         {
             if (good is Food food)
             {
-                return string.Join(",", food.Category, food.NameOfGood, food.UnitOfMeasure, food.UnitPrice, food.Amount, food.ExpiryDate, food.DateOfLastDelivery);
+                return string.Join(",", food.Category, food.NameOfGood, food.UnitOfMeasure, FormatUnitPrice(food.UnitPrice), food.Amount, food.ExpiryDate, food.DateOfLastDelivery);
             }
             else if (good is Clothing clothing)
             {
-                return string.Join(",", clothing.Category, clothing.NameOfGood, clothing.Size, clothing.Color, clothing.Brand, clothing.UnitOfMeasure, clothing.UnitPrice, clothing.Amount, clothing.DateOfLastDelivery);
+                return string.Join(",", clothing.Category, clothing.NameOfGood, clothing.Size, clothing.Color, clothing.Brand, clothing.UnitOfMeasure, FormatUnitPrice(clothing.UnitPrice), clothing.Amount, clothing.DateOfLastDelivery);
             }
             else if (good is Electronics electronics)
             {
-                return string.Join(",", electronics.Category, electronics.NameOfGood, electronics.Model, electronics.Company, electronics.UnitOfMeasure, electronics.UnitPrice, electronics.Amount, electronics.DateOfLastDelivery);
+                return string.Join(",", electronics.Category, electronics.NameOfGood, electronics.Model, electronics.Company, electronics.UnitOfMeasure, FormatUnitPrice(electronics.UnitPrice), electronics.Amount, electronics.DateOfLastDelivery);
             }
             else
             {
                 throw new ArgumentException("Unsupported type of Good");
             }
+        }
+
+        private static string FormatUnitPrice(double unitPrice)
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            return unitPrice.ToString(CultureInfo.InvariantCulture);
         }
 
         private static void AddExistingInvoices(BaseOfInvoices invoices, string filepath)
@@ -124,15 +130,13 @@ namespace Warehouse
                         switch (values[0])
                         {
                             case "food":
-                            case "drinks":
-                                invoiceList[invoiceList.Count - 1].Add(new Food(values[0], values[1], values[2], int.Parse(values[3]), int.Parse(values[4]), DateTime.Parse(values[5]), DateTime.Parse(values[6])));
+                                invoiceList[invoiceList.Count - 1].Add(new Food(values[0], values[1], values[2], double.Parse(values[3]), int.Parse(values[4]), DateTime.Parse(values[5]), DateTime.Parse(values[6])));
                                 break;
                             case "clothes":
-                            case "footwear":
-                                invoiceList[invoiceList.Count - 1].Add(new Clothing(values[0], values[1], values[2], values[3], values[4], values[5], int.Parse(values[6]), int.Parse(values[7]), DateTime.Parse(values[8])));
+                                invoiceList[invoiceList.Count - 1].Add(new Clothing(values[0], values[1], values[2], values[3], values[4], values[5], double.Parse(values[6]), int.Parse(values[7]), DateTime.Parse(values[8])));
                                 break;
                             case "electronics":
-                                invoiceList[invoiceList.Count - 1].Add(new Electronics(values[0], values[1], values[2], values[3], values[4], int.Parse(values[5]), int.Parse(values[6]), DateTime.Parse(values[7])));
+                                invoiceList[invoiceList.Count - 1].Add(new Electronics(values[0], values[1], values[2], values[3], values[4], double.Parse(values[5]), int.Parse(values[6]), DateTime.Parse(values[7])));
                                 break;
                         }
                     }
@@ -169,18 +173,7 @@ namespace Warehouse
 
                 foreach (Good good in invoice)
                 {
-                    if (good is Food food)
-                    {
-                        writer.WriteLine(string.Join(",", food.Category, food.NameOfGood, food.UnitOfMeasure, food.UnitPrice, food.Amount, food.ExpiryDate, food.DateOfLastDelivery));
-                    }
-                    else if (good is Clothing clothing)
-                    {
-                        writer.WriteLine(string.Join(",", clothing.Category, clothing.NameOfGood, clothing.Size, clothing.Color, clothing.Brand, clothing.UnitOfMeasure, clothing.UnitPrice, clothing.Amount, clothing.DateOfLastDelivery));
-                    }
-                    else if (good is Electronics electronics)
-                    {
-                        writer.WriteLine(string.Join(",", electronics.Category, electronics.NameOfGood, electronics.Model, electronics.Company, electronics.UnitOfMeasure, electronics.UnitPrice, electronics.Amount, electronics.DateOfLastDelivery));
-                    }
+                    writer.WriteLine(FormatGood(good));
                 }
 
             }

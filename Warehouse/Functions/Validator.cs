@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -66,36 +69,8 @@ namespace Warehouse
             }
         }
 
-        static public List<int> GetTheValidationElements(string message)
-        {
-            return GetTheValidationInput(message, input =>
-            {
-                return input.Split(',').Select(int.Parse).ToList();
-            }, elements =>
-            {
-                return !HasDuplicates(elements);
-            });
-        }
-      /*  static public DateTime GetTheValidationDateTime(string message)
-        {
-            return GetTheValidationInput(message, input =>
-            {
-                if (DateTime.TryParse(input, out DateTime result))
-                {
-                    return result;
-                }
-            });
-        }*/
-
-        static public int GetTheValidationAmountForDeletion(string message, Good good)
-        {
-            return GetTheValidationInput(message, int.Parse, userInput =>
-            {
-                return userInput >= 1 && userInput <= good.Amount;
-            });
-        }
-
-        static public int GetTheValidationNumber(string message)
+        //for number that exsists in the range of excisting goods
+        static public int GetTheValidationNumberOfGoods(string message)
         {
             string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods\Goods.txt";
 
@@ -107,38 +82,77 @@ namespace Warehouse
             });
         }
 
-        static public string GetTheValidationType(string message)
+
+        //for string inputs of characteristics
+        static public string GetTheValidationGoodCharacteristic(string message, bool allowNullInput = false)
+        {
+            return GetTheValidationInput(message, s => s.ToLower(), userInput =>
+            {
+                return !string.IsNullOrEmpty(userInput);
+            }, allowNullInput);
+        }
+
+        static public string GetTheValidationType(string message, bool allowNullInput = false)
         {
             return GetTheValidationInput(message, input =>
             {
                 return input;
-            }, HasTheType);
+            }, HasTheType, allowNullInput);
         }
 
-        static public string GetTheValidationTypeForFinding(string message)
+        static public double GetTheValidationUnitPrice(string message, bool allowNullInput = false)
+        {
+            return GetTheValidationInput(message, double.Parse, userInput =>
+            {
+                return userInput > 0 && userInput == Math.Round(userInput, 2);
+            }, allowNullInput);
+        }
+
+        static public int GetTheValidationAmount(string message, bool allowNullInput = false)
+        {
+            return GetTheValidationInput(message, int.Parse, userInput =>
+            {
+                return userInput > 0;
+            }, allowNullInput);
+        }
+       
+        static public DateTime GetTheValidationDateTime(string message, bool allowNullInput = false)
+        {
+            return GetTheValidationInput(message, DateTime.Parse, input =>
+            {
+                DateTime dateNow = DateTime.Now;
+
+                return input <= dateNow;
+            }, allowNullInput);
+        }
+
+        static public string GetTheValidationSize(string message, bool allowNullInput = false)
+        {
+            return GetTheValidationInput(message, s => s, HasTheSize, allowNullInput);
+        }
+
+
+        static public int GetTheValidationAmountForDeletion(string message, Good good)
+        {
+            return GetTheValidationInput(message, int.Parse, userInput =>
+            {
+                return userInput >= 1 && userInput <= good.Amount;
+            });
+        }
+
+        static public List<int> GetTheValidationListOfCharacteristics(string message)
         {
             return GetTheValidationInput(message, input =>
             {
-                return input;
-            }, HasTheType, allowNullInput: true);
-        }
-
-        static public string GetTheValidationSize(string message)
-        {
-            return GetTheValidationInput(message, input =>
+                return input.Split(',').Select(int.Parse).ToList();
+            }, elements =>
             {
-                return input;
-            }, HasTheSize);
+                return !HasDuplicates(elements);
+            });
         }
 
-        static public string GetTheValidationSizeForFinding(string message)
-        {
-            return GetTheValidationInput(message, input =>
-            {
-                return input;
-            }, HasTheSize, allowNullInput: true);
-        }
-
+       
+        
         private static bool HasDuplicates(List<int> characteristics)
         {
             HashSet<int> unique = new HashSet<int>();
@@ -157,7 +171,7 @@ namespace Warehouse
         {
             string type = input.ToLower();
 
-            if (type == "food" || type == "drinks" || type == "clothing" || type == "footwear" || type == "electronics")
+            if (type == "food" || type == "clothing" || type == "electronics")
             {
                 return true;
             }

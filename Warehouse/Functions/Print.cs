@@ -12,7 +12,7 @@ namespace Warehouse
     internal class Print
     {
         public delegate void GoodsPrinter(Warehouse allGoods);
-        public static void WayOfPrinting(Warehouse allGoods, GoodsPrinter? printFunction = null)
+        public static void WayOfPrinting(Warehouse allGoods, GoodsPrinter? printGoodsTogether = null, bool printCategoriesOfGoods = false)
         {
             Console.WriteLine("\n\nChoose the way of printing goods:\n\n1.Print list with all goods together\n\n2.Print goods divided into categories");
             Console.Write("\nEnter chosen option: ");
@@ -25,20 +25,25 @@ namespace Warehouse
                 switch (input)
                 {
                     case "1":
-                        if(printFunction != null)
+                        if(printGoodsTogether != null)
                         {
-                            printFunction(allGoods);
+                            printGoodsTogether(allGoods);
                         }
                         isValid = true;
                         break;
                     case "2":
-                        PrintFood(allGoods);
-                        PrintClothing(allGoods);
-                        PrintElectronics(allGoods);
+                        if(printCategoriesOfGoods == false)
+                        {
+                            PrintGoodCategories(allGoods);
+                        }
+                        else
+                        {
+                            PrintGoodCategories(allGoods, true);
+                        }
                         isValid = true;
                         break;
                     default:
-                        Message(ConsoleColor.Red, "\nThere is no option like this one. Try to rewrite it.");
+                        Message(ConsoleColor.Red, "\nThere is no option like this one. Try to rewrite it.\n");
                         WayOfPrinting(allGoods);
                         break;
                 }
@@ -61,11 +66,11 @@ namespace Warehouse
             {
                 table.AddRow(
                      counter++,
-                        item.Category,
-                        item.NameOfGood,
-                        item is Clothing clothingSize ? clothingSize.Size : "",
-                        item is Clothing clothingColor ? clothingColor.Color : "",
-                        item is Clothing clothingBrand ? clothingBrand.Brand : "",
+                        item.Category.ToLower(),
+                        item.NameOfGood.ToLower(),
+                        item is Clothing clothingSize ? clothingSize.Size.ToLower() : "",
+                        item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
+                        item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
                         item is Electronics electronicsModel ? electronicsModel.Model : "",
                         item is Electronics electronicsCompany ? electronicsCompany.Company : "",
                         item.UnitOfMeasure,
@@ -79,14 +84,14 @@ namespace Warehouse
                     totalSumOfGood.Add(item);
                 }
             }
+
             Console.Write(table.ToString());
             Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah");
         }
 
 
-        public static void PrintCategoryOfGoods<T>(string[] header, Warehouse goods, string title, List<Good> totalSumOfGood) where T : Good
+        private static void PrintCategoryOfGoods<T>(string[] header, Warehouse goods, string title, List<Good> totalSumOfGood, bool? printEmptyLists = null) where T : Good
         {
-            Console.WriteLine($"\n\t\t\t\t\t\t{title}\n");
             var table = new ConsoleTable(header);
 
             int counter = 1;
@@ -97,8 +102,8 @@ namespace Warehouse
                 {
                     table.AddRow(
                     counter++,
-                    food.NameOfGood,
-                    food.UnitOfMeasure,
+                    food.NameOfGood.ToLower(),
+                    food.UnitOfMeasure.ToLower(),
                     $"{food.UnitPrice} uah/{food.UnitOfMeasure}",
                     food.Amount,
                     food.ExpiryDate.ToShortDateString(),
@@ -109,11 +114,11 @@ namespace Warehouse
                 {
                     table.AddRow(
                     counter++,
-                    clothing.NameOfGood,
-                    clothing.Size,
-                    clothing.Color,
+                    clothing.NameOfGood.ToLower(),
+                    clothing.Size.ToLower(),
+                    clothing.Color.ToLower(),
                     clothing.Brand,
-                    clothing.UnitOfMeasure,
+                    clothing.UnitOfMeasure.ToLower(),
                     $"{clothing.UnitPrice} uah/{clothing.UnitOfMeasure}",
                     clothing.Amount,
                     clothing.DateOfLastDelivery);
@@ -123,43 +128,55 @@ namespace Warehouse
                 {
                     table.AddRow(
                     counter++,
-                    electronics.NameOfGood,
+                    electronics.NameOfGood.ToLower(),
                     electronics.Model,
                     electronics.Company,
-                    electronics.UnitOfMeasure,
+                    electronics.UnitOfMeasure.ToLower(),
                     $"{electronics.UnitPrice} uah/{electronics.UnitOfMeasure}",
                     electronics.Amount,
                     electronics.DateOfLastDelivery);
                     totalSumOfGood.Add(electronics);
                 }
             }
-            Console.Write(table.ToString());
-            Console.WriteLine($"\n\nTotal sum: {TotalSum.CalculateTotalSum(totalSumOfGood)} uah");
+            if (table.Rows.Count > 0)
+            {
+                Console.WriteLine($"\n\t\t\t\t\t\t{title}\n");
+                Console.Write(table.ToString());
+                Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah");
+            }
+            else if (printEmptyLists == true)
+            {
+                if(typeof(T) == typeof(Food))
+                {
+                    Message(ConsoleColor.Red, $"\n No food goods were found.");
+                }
+                else if(typeof(T) == typeof(Clothing))
+                {
+                    Message(ConsoleColor.Red, $"\n No clothing goods were found.");
+                }
+                else if (typeof(T) == typeof(Electronics))
+                {
+                    Message(ConsoleColor.Red, $"\n No electronic goods were found.\n");
+                }
+
+            }
         }
         
-
-        public static void PrintFood(Warehouse allGoods)
+        private static void PrintGoodCategories(Warehouse allGoods, bool printCategoriesOfGoods = false)
         {
-            string[] headerForFood = {"№", "Name of a good", "Unit of measure", "Unit of price", "Amount",
-                "Expiry date", "Date of last delivery"};
-            PrintCategoryOfGoods<Food>(headerForFood, allGoods, "Food", new List<Good>());
+            PrintCategoryOfGoods<Food>(new string[]{"№", "Name of a good", "Unit of measure", "Unit of price", "Amount",
+                "Expiry date", "Date of last delivery"}, allGoods, "Food", new List<Good>(), printCategoriesOfGoods);
+
+            PrintCategoryOfGoods<Clothing>(new string[] {
+                "№", "Name of a good", "Size", "Color", "Brand", "Unit of measure", "Unit of price",
+                "Amount", "Date of last delivery"}, allGoods, "Clothing", new List<Good>(), printCategoriesOfGoods);
+
+            PrintCategoryOfGoods<Electronics>(new string[]{ "№", "Name of a good", "Model", "Company", "Unit of measure", "Unit of price",
+                "Amount", "Date of last delivery" }, allGoods, "Electronics", new List<Good>(), printCategoriesOfGoods);
+
         }
+
         
-        public static void PrintClothing(Warehouse allGoods)
-        {
-            string[] headerForClothing = {"№", "Name of a good", "Size", "Color", "Brand", "Unit of measure", "Unit of price",
-                "Amount", "Date of last delivery"};
-            PrintCategoryOfGoods<Clothing>(headerForClothing, allGoods, "Clothing", new List<Good>());
-        }
-        
-        public static void PrintElectronics(Warehouse allGoods)
-        {
-            string[] headerForElectronics = { "№", "Name of a good", "Model", "Company", "Unit of measure", "Unit of price",
-                "Amount", "Date of last delivery" };
-            PrintCategoryOfGoods<Electronics>(headerForElectronics, allGoods, "Electronics", new List<Good>());
-        }
-
-
         public static void ListOfAllGoods(Warehouse allGoods)
         {
             WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "List of all goods"));
@@ -173,7 +190,7 @@ namespace Warehouse
 
         public static void ListOfFindedGoods(Warehouse allGoods)
         {
-            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Finded goods"));
+            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Finded goods"), true);
         }
 
 

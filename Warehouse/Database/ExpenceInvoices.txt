@@ -18,3 +18,15 @@ food,cookies,pack,20,1000,08.08.2023,01.01.0001 0:00:00
 30.04.2023 20:59:25
 clothes,T-shirt,s,black,LV,piece,100,1500,01.05.2023 0:00:00
 electronics,телефон,IPhoneXR,Apple,piece,12000,2000,11.04.2023 21:24:40
+6
+03.05.2023 22:44:05
+food,ice cream,pack,15,10,12.04.2023 0:00:00,01.01.0001 0:00:00
+food,potato,kg,10,10,08.08.2023 0:00:00,01.04.2023 23:39:19
+food,bananas,kg,10,10,08.08.2023 0:00:00,01.04.2023 23:44:15
+clothes,T-shirt,s,black,LV,piece,100,10,01.05.2023 0:00:00
+food,chocolate,pack,10,10,08.08.2023 0:00:00,02.07.2023 0:00:00
+food,cookies,pack,20,10,08.08.2023 0:00:00,01.01.0001 0:00:00
+footwear,trainers,m,white,LV,pair,150,10,11.04.2023 20:18:40
+food,soup,pack,35,10,08.08.2023 0:00:00,11.04.2023 21:24:40
+electronics,molibe-phone,IPhoneXR,Apple,piece,12000,10,11.04.2023 21:24:40
+food,pancakes,pack,50,10,01.12.2023 0:00:00,18.04.2023 0:00:00
