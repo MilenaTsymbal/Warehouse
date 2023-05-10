@@ -14,8 +14,8 @@ namespace Warehouse
         public delegate void GoodsPrinter(Warehouse allGoods);
         public static void WayOfPrinting(Warehouse allGoods, GoodsPrinter? printGoodsTogether = null, bool printCategoriesOfGoods = false)
         {
-            Console.WriteLine("\n\nChoose the way of printing goods:\n\n1.Print list with all goods together\n\n2.Print goods divided into categories");
-            Console.Write("\nEnter chosen option: ");
+            Console.WriteLine("\n\nChoose the way of printing goods:\n\n1.Print all goods together\n\n2.Print goods divided into categories");
+            Console.Write("\nEnter the chosen option: ");
 
             string? input = Console.ReadLine();
             bool isValid = false;
@@ -43,7 +43,7 @@ namespace Warehouse
                         isValid = true;
                         break;
                     default:
-                        Message(ConsoleColor.Red, "\nThere is no option like this one. Try to rewrite it.\n");
+                        Message(ConsoleColor.Red, "\nInvalid command! Try to rewrite it.\n");
                         WayOfPrinting(allGoods);
                         break;
                 }
@@ -72,7 +72,7 @@ namespace Warehouse
                         item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
                         item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
                         item is Electronics electronicsModel ? electronicsModel.Model : "",
-                        item is Electronics electronicsCompany ? electronicsCompany.Company : "",
+                        item is Electronics electronicsCompany ? (electronicsCompany.Company.Substring(0, 1).ToUpper() + electronicsCompany.Company.Substring(1).ToLower()) : "",
                         item.UnitOfMeasure,
                         $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
                         item.Amount,
@@ -86,7 +86,7 @@ namespace Warehouse
             }
 
             Console.Write(table.ToString());
-            Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah");
+            Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah\n");
         }
 
 
@@ -146,22 +146,24 @@ namespace Warehouse
             }
             else if (printEmptyLists == true)
             {
-                if(typeof(T) == typeof(Food))
-                {
-                    Message(ConsoleColor.Red, $"\n No food goods were found.");
-                }
-                else if(typeof(T) == typeof(Clothing))
-                {
-                    Message(ConsoleColor.Red, $"\n No clothing goods were found.");
-                }
-                else if (typeof(T) == typeof(Electronics))
-                {
-                    Message(ConsoleColor.Red, $"\n No electronic goods were found.\n");
-                }
-
+                PrintEmptyListMessage<T>();
             }
         }
-        
+        private static void PrintEmptyListMessage<T>()
+        {
+            if (typeof(T) == typeof(Food))
+            {
+                Message(ConsoleColor.Red, $"\n No food goods were found.");
+            }
+            else if (typeof(T) == typeof(Clothing))
+            {
+                Message(ConsoleColor.Red, $"\n No clothing goods were found.");
+            }
+            else if (typeof(T) == typeof(Electronics))
+            {
+                Message(ConsoleColor.Red, $"\n No electronic goods were found.\n");
+            }
+        }
         private static void PrintGoodCategories(Warehouse allGoods, bool printCategoriesOfGoods = false)
         {
             PrintCategoryOfGoods<Food>(new string[]{"№", "Name of a good", "Unit of measure", "Unit of price", "Amount",
@@ -185,7 +187,7 @@ namespace Warehouse
         public static void ListAfetrEditing(Warehouse allGoods)
         {
 
-            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Goods after editing"));
+            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Edited goods"));
         }
 
         public static void ListOfFindedGoods(Warehouse allGoods)
@@ -198,7 +200,7 @@ namespace Warehouse
         {
             invoice.DateOfMakingInvoice = DateTime.Now;
 
-            PrintGoods<Good>(invoice, $"{title} {invoice.NumberOfInvoice}");
+            PrintGoods<Good>(invoice, $"{title} {invoice.NumberOfInvoice}", invoice.DateOfMakingInvoice);
         }
 
         public static void IncomeInvoice(Invoice invoice)

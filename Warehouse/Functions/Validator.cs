@@ -72,7 +72,7 @@ namespace Warehouse
         //for number that exsists in the range of excisting goods
         static public int GetTheValidationNumberOfGoods(string message)
         {
-            string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Goods\Goods.txt";
+            string filePath = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Database\Goods.txt";
 
             int lastLineNumber = File.ReadLines(filePath).Count();
 
@@ -88,7 +88,7 @@ namespace Warehouse
         {
             return GetTheValidationInput(message, s => s.ToLower(), userInput =>
             {
-                return !string.IsNullOrEmpty(userInput);
+                return (!string.IsNullOrEmpty(userInput) && ContainsNoNumbers(userInput));
             }, allowNullInput);
         }
 
@@ -96,7 +96,7 @@ namespace Warehouse
         {
             return GetTheValidationInput(message, input =>
             {
-                return input;
+                return input.ToLower();
             }, HasTheType, allowNullInput);
         }
 
@@ -131,6 +131,13 @@ namespace Warehouse
             return GetTheValidationInput(message, s => s, HasTheSize, allowNullInput);
         }
 
+        static public string GetTheValidationModel(string message, bool allowNullInput = false)
+        {
+            return GetTheValidationInput(message, s => s.ToLower(), userInput =>
+            {
+                return !string.IsNullOrEmpty(userInput);
+            }, allowNullInput);
+        }
 
         static public int GetTheValidationAmountForDeletion(string message, Good good)
         {
@@ -192,6 +199,17 @@ namespace Warehouse
             return true;
         }
 
-       
+        private static bool ContainsNoNumbers(string str)
+        {
+            foreach (char c in str)
+            {
+                if (Char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
     }
 }

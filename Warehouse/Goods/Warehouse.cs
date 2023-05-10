@@ -21,7 +21,7 @@ namespace Warehouse
             addedGoods.NumberOfInvoice = FileWork.CountIncomeInvoices() + 1;
             int lastItem = Count;
 
-            int numberOfNewProducts = Validator.GetTheValidationInput("\nEnter the number of goods you want to add: ", int.Parse);
+            int numberOfNewProducts = Validator.GetTheValidationInput("\n\nEnter the number of goods you want to add: ", int.Parse);
 
             if (numberOfNewProducts > 0)
             {
@@ -49,16 +49,17 @@ namespace Warehouse
 
         private Good CreateNewGood()
         {
-            Console.WriteLine("\nChoose the type of product out of these:\n-Food\n-Clothing\n-Electronics");
-            string category = Validator.GetTheValidationType("\nEnter the name of the type of the product: ");
+            Console.WriteLine("\nChoose the type of the product out of these:\n-Food\n-Clothing\n-Electronics");
 
-            string nameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the name of the good: ");
+            string category = Validator.GetTheValidationType("\nEnter the product type name: ");
 
-            string unitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Write unit of measure of a good: ");
+            string nameOfGood = Validator.GetTheValidationGoodCharacteristic("Enter the good's name: ");
 
-            double unitPrice = Validator.GetTheValidationUnitPrice("Write unit of price of a good: ");
+            string unitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Enter unit of measure of a good: ");
 
-            int amount = Validator.GetTheValidationAmount("Write amount of delivered goods: ");
+            double unitPrice = Validator.GetTheValidationUnitPrice("Enter unit of price of a good: ");
+
+            int amount = Validator.GetTheValidationAmount("Enter an amount of delivered goods: ");
 
             DateTime dateOfLastDelivery = Validator.GetTheValidationDateTime("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
 
@@ -66,17 +67,17 @@ namespace Warehouse
             {
                 case "food":
                 case "drinks":
-                    DateTime expiryDate = Validator.GetTheValidationInput("Enter an expiry date of a product (in the format dd.mm.yyyy):  ", DateTime.Parse);
+                    DateTime expiryDate = Validator.GetTheValidationInput("Enter an expiry date of a good (in the format dd.mm.yyyy):  ", DateTime.Parse);
                     return new Food(category, nameOfGood, unitOfMeasure, unitPrice, amount, expiryDate, dateOfLastDelivery);
                 case "clothing":
                 case "footwear":
-                    string size = Validator.GetTheValidationSize("Enter the size of the product: ");
-                    string color = Validator.GetTheValidationGoodCharacteristic("Enter the color of the product: ");
-                    string brand = Validator.GetTheValidationGoodCharacteristic("Enter the name of the brand of the product: ");
+                    string size = Validator.GetTheValidationSize("Enter the size of the good: ");
+                    string color = Validator.GetTheValidationGoodCharacteristic("Enter the color of the good: ");
+                    string brand = Validator.GetTheValidationGoodCharacteristic("Enter the good's brand name: ");
                     return new Clothing(category, nameOfGood, size, color, brand, unitOfMeasure, unitPrice, amount, dateOfLastDelivery);
                 case "electronics":
-                    string model = Validator.GetTheValidationGoodCharacteristic("Enter the name of the model of the product: ");
-                    string company = Validator.GetTheValidationGoodCharacteristic("Enter the name of the company that produces this product: ");
+                    string model = Validator.GetTheValidationModel("Enter the model of the good: ");
+                    string company = Validator.GetTheValidationGoodCharacteristic("Enter the name of the company that produces these goods: ");
                     return new Electronics(category, nameOfGood, model, company, unitOfMeasure, unitPrice, amount, dateOfLastDelivery);
                 default:
                     throw new InvalidOperationException("Invalid category: " + category);
@@ -91,7 +92,7 @@ namespace Warehouse
 
             Warehouse editedGoods = new Warehouse();
 
-            int amountOfGoodsForChange = Validator.GetTheValidationNumberOfGoods("\nEnter the number of goods that will be changed: ");
+            int amountOfGoodsForChange = Validator.GetTheValidationNumberOfGoods("\n\nEnter the number of goods that will be changed: ");
 
             if(amountOfGoodsForChange > 0)
             {
@@ -120,7 +121,7 @@ namespace Warehouse
 
             if (this[indexOfGood - 1] is Food food)
             {
-                Console.WriteLine("\nThere are all the characteristics that you can change:\n" +
+                Console.WriteLine("\nThere are all the characteristics of food goods that you can change:\n" +
                 "1. Name of a good\n2. Unit of measure\n3. Unit of price\n4. Amount\n5. Expiry date\n6. Date of last delivery\n");
                 characterList = Validator.GetTheValidationListOfCharacteristics("Enter the number / numbers of characteristic / characteristics that you want to change: \n");
                 
@@ -131,22 +132,22 @@ namespace Warehouse
                     switch (item)
                     {
                         case 1:
-                            food.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the name of the good: ");
+                            food.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the good's name: ");
                             break;
                         case 2:
-                            food.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Write unit of measure of a good: ");
+                            food.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Enter unit of measure of a good: ");
                             break;
                         case 3:
-                            food.UnitPrice = Validator.GetTheValidationUnitPrice("Write unit of price of a good: ");
+                            food.UnitPrice = Validator.GetTheValidationUnitPrice("Enter unit of price of a good: ");
                             break;
                         case 4:
-                            food.Amount = Validator.GetTheValidationAmount("Write amount of delivered goods: ");
+                            food.Amount = Validator.GetTheValidationAmount("Enter amount of delivered goods: ");
                             break;
                         case 5:
-                            food.ExpiryDate = Validator.GetTheValidationInput("Write expiry date of this good (in format dd.mm.yyyy): ", DateTime.Parse);
+                            food.ExpiryDate = Validator.GetTheValidationInput("Enter expiry date of this good (in format dd.mm.yyyy): ", DateTime.Parse);
                             break;
                         case 6:
-                            food.DateOfLastDelivery = Validator.GetTheValidationDateTime("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
+                            food.DateOfLastDelivery = Validator.GetTheValidationDateTime("Enter date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
                             break;
                     }
                 }
@@ -163,7 +164,7 @@ namespace Warehouse
                     switch (item)
                     {
                         case 1:
-                            clothing.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the name of the good: ");
+                            clothing.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the good's name: ");
                             break;
                         case 2:
                             clothing.Size = Validator.GetTheValidationSize("Enter the size of the product: ");
@@ -172,16 +173,16 @@ namespace Warehouse
                             clothing.Brand = Validator.GetTheValidationGoodCharacteristic("Enter the name of the brand of the product: ");
                             break;
                         case 4:
-                            clothing.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Write unit of measure of a good: ");
+                            clothing.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Enter unit of measure of a good: ");
                             break;
                         case 5:
-                            clothing.UnitPrice = Validator.GetTheValidationUnitPrice("Write unit of price of a good: ");
+                            clothing.UnitPrice = Validator.GetTheValidationUnitPrice("Enter unit of price of a good: ");
                             break;
                         case 6:
-                            clothing.Amount = Validator.GetTheValidationAmount("Write amount of delivered goods: ");
+                            clothing.Amount = Validator.GetTheValidationAmount("Enter amount of delivered goods: ");
                             break;
                         case 7:
-                            clothing.DateOfLastDelivery = Validator.GetTheValidationDateTime("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
+                            clothing.DateOfLastDelivery = Validator.GetTheValidationDateTime("Enter date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
                             break;
                     }
                 }
@@ -198,25 +199,25 @@ namespace Warehouse
                     switch (item)
                     {
                         case 1:
-                            electronics.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the name of the good: ");
+                            electronics.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the good's name: ");
                             break;
                         case 2:
-                            electronics.Model = Validator.GetTheValidationGoodCharacteristic("Enter the name of the model of the product: ");
+                            electronics.Model = Validator.GetTheValidationModel("Enter the name of the model of the product: ");
                             break;
                         case 3:
                             electronics.Company = Validator.GetTheValidationGoodCharacteristic("Enter the name of the company that produces this product: ");
                             break;
                         case 4:
-                            electronics.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Write unit of measure of a good: ");
+                            electronics.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Enter unit of measure of a good: ");
                             break;
                         case 5:
-                            electronics.UnitPrice = Validator.GetTheValidationUnitPrice("Write unit of price of a good: ");
+                            electronics.UnitPrice = Validator.GetTheValidationUnitPrice("Enter unit of price of a good: ");
                             break;
                         case 6:
-                            electronics.Amount = Validator.GetTheValidationAmount("Write amount of delivered goods: ");
+                            electronics.Amount = Validator.GetTheValidationAmount("Enter amount of delivered goods: ");
                             break;
                         case 7:
-                            electronics.DateOfLastDelivery = Validator.GetTheValidationDateTime("Write date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
+                            electronics.DateOfLastDelivery = Validator.GetTheValidationDateTime("Enter date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
                             break;
                     }
                 }
@@ -232,14 +233,14 @@ namespace Warehouse
             Invoice deletedGoods = new Invoice();
             deletedGoods.NumberOfInvoice = FileWork.CountExpenceInvoices() + 1;
 
-            int amountOfGoodsForDeletion = Validator.GetTheValidationNumberOfGoods("\nEnter numbers of goods that will be deleted: ");
+            int amountOfGoodsForDeletion = Validator.GetTheValidationNumberOfGoods("\nEnter the number of goods that will be deleted: ");
 
             if(amountOfGoodsForDeletion > 0)
             {
                 for (int i = 0; i < amountOfGoodsForDeletion; i++)
                 {
-                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\nEnter the number of a good ({i + 1}/{amountOfGoodsForDeletion}) that you want to change: ");
-                    int amountForDeletion = Validator.GetTheValidationAmountForDeletion($"\nEnter the number of amount of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be transferred: ", this[indexOfGood - 1]);
+                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\n\nEnter the number of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be dispatched: ");
+                    int amountForDeletion = Validator.GetTheValidationAmountForDeletion($"\nEnter the number of amount of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be dispatched: ", this[indexOfGood - 1]);
 
                     if (amountForDeletion < this[indexOfGood - 1].Amount)
                     {

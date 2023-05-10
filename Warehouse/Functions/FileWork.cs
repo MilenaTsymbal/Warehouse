@@ -22,20 +22,7 @@ namespace Warehouse
 
                 foreach (string line in lines)
                 {
-                    string[] values = line.Split(',');
-
-                    switch (values[0])
-                    {
-                        case "food":
-                            allGoods.Add(new Food(values[0], values[1], values[2], double.Parse(values[3], CultureInfo.InvariantCulture), int.Parse(values[4]), DateTime.Parse(values[5]), DateTime.Parse(values[6])));
-                            break;
-                        case "clothing":
-                            allGoods.Add(new Clothing(values[0], values[1], values[2], values[3], values[4], values[5], double.Parse(values[6], CultureInfo.InvariantCulture), int.Parse(values[7]), DateTime.Parse(values[8])));
-                            break;
-                        case "electronics":
-                            allGoods.Add(new Electronics(values[0], values[1], values[2], values[3], values[4], double.Parse(values[5], CultureInfo.InvariantCulture), int.Parse(values[6]), DateTime.Parse(values[7])));
-                            break;
-                    }
+                    allGoods.Add(AddExistingTypeOfGood(line));
                 }
             }
             catch (IOException e)
@@ -43,6 +30,7 @@ namespace Warehouse
                 Console.WriteLine($"An error occurred while reading the file: {e.Message}");
             }
         }
+
 
 
         public static void AddNewGoodsToFile(Warehouse allGoods)
@@ -101,6 +89,8 @@ namespace Warehouse
             return unitPrice.ToString(CultureInfo.InvariantCulture);
         }
 
+
+
         private static void AddExistingInvoices(BaseOfInvoices invoices, string filepath)
         {
             try
@@ -124,21 +114,7 @@ namespace Warehouse
                     }
                     else
                     {
-                        // Иначе это данные о товаре в счете-фактуре
-                        string[] values = line.Split(',');
-
-                        switch (values[0])
-                        {
-                            case "food":
-                                invoiceList[invoiceList.Count - 1].Add(new Food(values[0], values[1], values[2], double.Parse(values[3]), int.Parse(values[4]), DateTime.Parse(values[5]), DateTime.Parse(values[6])));
-                                break;
-                            case "clothes":
-                                invoiceList[invoiceList.Count - 1].Add(new Clothing(values[0], values[1], values[2], values[3], values[4], values[5], double.Parse(values[6]), int.Parse(values[7]), DateTime.Parse(values[8])));
-                                break;
-                            case "electronics":
-                                invoiceList[invoiceList.Count - 1].Add(new Electronics(values[0], values[1], values[2], values[3], values[4], double.Parse(values[5]), int.Parse(values[6]), DateTime.Parse(values[7])));
-                                break;
-                        }
+                        invoiceList[invoiceList.Count - 1].Add(AddExistingTypeOfGood(line));
                     }
                 }
 
@@ -150,7 +126,7 @@ namespace Warehouse
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while reading from file: {ex.Message}");
+                Print.Message(ConsoleColor.Red, $"An error occurred while reading from file: {ex.Message}");
             }
         }
 
@@ -158,10 +134,12 @@ namespace Warehouse
         {
             AddExistingInvoices(invoices, filePathToIncomeInvoices);
         }
+
         public static void AddExistingExpenceInvoices(BaseOfInvoices invoices)
         {
             AddExistingInvoices(invoices, filePathToExpenceInvoices);
         }
+
 
 
         private static void AddNewInvoice(Invoice invoice, string filepath)
@@ -183,10 +161,12 @@ namespace Warehouse
         {
             AddNewInvoice(incomeInvoice, filePathToIncomeInvoices);
         }
+
         public static void AddNewExpenceInvoice(Invoice expenceInvoice)
         {
             AddNewInvoice(expenceInvoice, filePathToExpenceInvoices);
         }
+
 
 
         private static int CountNumericLines(string filePath)
@@ -222,5 +202,25 @@ namespace Warehouse
         {
             return CountNumericLines(filePathToExpenceInvoices);
         }
+
+
+
+        private static Good AddExistingTypeOfGood(string line)
+        {
+            string[] values = line.Split(',');
+
+            switch (values[0])
+            {
+                case "food":
+                    return new Food(values[0], values[1], values[2], double.Parse(values[3], CultureInfo.InvariantCulture), int.Parse(values[4]), DateTime.Parse(values[5]), DateTime.Parse(values[6]));
+                case "clothing":
+                    return new Clothing(values[0], values[1], values[2], values[3], values[4], values[5], double.Parse(values[6], CultureInfo.InvariantCulture), int.Parse(values[7]), DateTime.Parse(values[8]));
+                case "electronics":
+                    return new Electronics(values[0], values[1], values[2], values[3], values[4], double.Parse(values[5], CultureInfo.InvariantCulture), int.Parse(values[6]), DateTime.Parse(values[7]));
+                default:
+                    throw new ArgumentException("Unsupported type of Good");
+            }
+        }
+
     }
 }

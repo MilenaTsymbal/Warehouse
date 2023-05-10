@@ -7,7 +7,6 @@ namespace Warehouse
         public string Size { get; set; }
         public string Color { get; set; }
         public string Brand { get; set; }
-
         public Clothing(string category, string nameOfGood, string size, string color, string brand, string unitOfMeasure, double unitPrice, int amount, DateTime dateOfLastDelivery)
             : base(category, nameOfGood, unitOfMeasure, unitPrice, amount, dateOfLastDelivery)
         {
