@@ -7,11 +7,11 @@ namespace Warehouse
 {
     public class Warehouse : List<Good>
     {
-        public List<Good?> goods;
+        public List<Good> goods;
 
         public Warehouse()
         {
-            goods = new List<Good?>();
+            goods = new List<Good>();
         }
 
 
@@ -19,6 +19,8 @@ namespace Warehouse
         {
             Invoice addedGoods = new Invoice();
             addedGoods.NumberOfInvoice = FileWork.CountIncomeInvoices() + 1;
+            addedGoods.DateOfMakingInvoice = DateTime.Now;
+
             int lastItem = Count;
 
             int numberOfNewProducts = Validator.GetTheValidationInput("\n\nEnter the number of goods you want to add: ", int.Parse);
@@ -94,7 +96,7 @@ namespace Warehouse
 
             int amountOfGoodsForChange = Validator.GetTheValidationNumberOfGoods("\n\nEnter the number of goods that will be changed: ");
 
-            if(amountOfGoodsForChange > 0)
+            if (amountOfGoodsForChange > 0)
             {
                 for (int i = 0; i < amountOfGoodsForChange; i++)
                 {
@@ -112,115 +114,21 @@ namespace Warehouse
                 Print.Message(ConsoleColor.Red, "\nAn invalid value, the number must be greater than 0");
                 EditGood();
             }
-           
-        }
 
+        }
         private void EditGoodCharacteristics(int indexOfGood)
         {
-            List<int> characterList = new List<int>();
-
             if (this[indexOfGood - 1] is Food food)
             {
-                Console.WriteLine("\nThere are all the characteristics of food goods that you can change:\n" +
-                "1. Name of a good\n2. Unit of measure\n3. Unit of price\n4. Amount\n5. Expiry date\n6. Date of last delivery\n");
-                characterList = Validator.GetTheValidationListOfCharacteristics("Enter the number / numbers of characteristic / characteristics that you want to change: \n");
-                
-                var characteristics = characterList.OrderBy(x => x);
-
-                foreach (int item in characteristics)
-                {
-                    switch (item)
-                    {
-                        case 1:
-                            food.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the good's name: ");
-                            break;
-                        case 2:
-                            food.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Enter unit of measure of a good: ");
-                            break;
-                        case 3:
-                            food.UnitPrice = Validator.GetTheValidationUnitPrice("Enter unit of price of a good: ");
-                            break;
-                        case 4:
-                            food.Amount = Validator.GetTheValidationAmount("Enter amount of delivered goods: ");
-                            break;
-                        case 5:
-                            food.ExpiryDate = Validator.GetTheValidationInput("Enter expiry date of this good (in format dd.mm.yyyy): ", DateTime.Parse);
-                            break;
-                        case 6:
-                            food.DateOfLastDelivery = Validator.GetTheValidationDateTime("Enter date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
-                            break;
-                    }
-                }
+                Food.EditFoodCharacteristics(food);
             }
             else if (this[indexOfGood - 1] is Clothing clothing)
             {
-                Console.WriteLine("\nThere are all the characteristics that you can change:\n" +
-       "1. Name of a good\n2. Size\n3. Brand\n4. Unit of measure\n5. Unit of price\n6. Amount\n7. Date of last delivery\n");
-                characterList = Validator.GetTheValidationListOfCharacteristics("Enter the number / numbers of characteristic / characteristics that you want to change: \n");
-
-                var characteristics = characterList.OrderBy(x => x);
-                foreach (int item in characteristics)
-                {
-                    switch (item)
-                    {
-                        case 1:
-                            clothing.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the good's name: ");
-                            break;
-                        case 2:
-                            clothing.Size = Validator.GetTheValidationSize("Enter the size of the product: ");
-                            break;
-                        case 3:
-                            clothing.Brand = Validator.GetTheValidationGoodCharacteristic("Enter the name of the brand of the product: ");
-                            break;
-                        case 4:
-                            clothing.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Enter unit of measure of a good: ");
-                            break;
-                        case 5:
-                            clothing.UnitPrice = Validator.GetTheValidationUnitPrice("Enter unit of price of a good: ");
-                            break;
-                        case 6:
-                            clothing.Amount = Validator.GetTheValidationAmount("Enter amount of delivered goods: ");
-                            break;
-                        case 7:
-                            clothing.DateOfLastDelivery = Validator.GetTheValidationDateTime("Enter date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
-                            break;
-                    }
-                }
+                Clothing.EditClothingCharacteristics(clothing);
             }
             else if (this[indexOfGood - 1] is Electronics electronics)
             {
-                Console.WriteLine("\nThere are all the characteristics that you can change:\n" +
-        "1. Name of a good\n2. Model\n3. Company\n4. Unit of measure\n5. Unit of price\n6. Amount\n7. Date of last delivery\n");
-                characterList = Validator.GetTheValidationListOfCharacteristics("Enter the number / numbers of characteristic / characteristics that you want to change: \n");
-
-                var characteristics = characterList.OrderBy(x => x);
-                foreach (int item in characteristics)
-                {
-                    switch (item)
-                    {
-                        case 1:
-                            electronics.NameOfGood = Validator.GetTheValidationGoodCharacteristic("\nEnter the good's name: ");
-                            break;
-                        case 2:
-                            electronics.Model = Validator.GetTheValidationModel("Enter the name of the model of the product: ");
-                            break;
-                        case 3:
-                            electronics.Company = Validator.GetTheValidationGoodCharacteristic("Enter the name of the company that produces this product: ");
-                            break;
-                        case 4:
-                            electronics.UnitOfMeasure = Validator.GetTheValidationGoodCharacteristic("Enter unit of measure of a good: ");
-                            break;
-                        case 5:
-                            electronics.UnitPrice = Validator.GetTheValidationUnitPrice("Enter unit of price of a good: ");
-                            break;
-                        case 6:
-                            electronics.Amount = Validator.GetTheValidationAmount("Enter amount of delivered goods: ");
-                            break;
-                        case 7:
-                            electronics.DateOfLastDelivery = Validator.GetTheValidationDateTime("Enter date and time of last delivery of this good (in format dd.mm.yyyy hh:mm:ss): ");
-                            break;
-                    }
-                }
+                Electronics.EditElectronicsCharacteristics(electronics);
             }
         }
 
@@ -232,10 +140,11 @@ namespace Warehouse
 
             Invoice deletedGoods = new Invoice();
             deletedGoods.NumberOfInvoice = FileWork.CountExpenceInvoices() + 1;
+            deletedGoods.DateOfMakingInvoice = DateTime.Now;
 
             int amountOfGoodsForDeletion = Validator.GetTheValidationNumberOfGoods("\nEnter the number of goods that will be deleted: ");
 
-            if(amountOfGoodsForDeletion > 0)
+            if (amountOfGoodsForDeletion > 0)
             {
                 for (int i = 0; i < amountOfGoodsForDeletion; i++)
                 {
@@ -315,7 +224,7 @@ namespace Warehouse
             }
             Print.ListOfFindedGoods(foundGoods);
         }
-        
+
         private bool IsGoodMatchingCriteria(Good good, FindGoods findGoods)
         {
             if ((findGoods.NameOfGood == "" || good.NameOfGood!.ToLower().Contains(findGoods.NameOfGood!.ToLower()))
@@ -341,5 +250,4 @@ namespace Warehouse
         }
 
     }
-
 }

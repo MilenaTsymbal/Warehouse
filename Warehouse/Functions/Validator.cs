@@ -147,19 +147,52 @@ namespace Warehouse
             });
         }
 
-        static public List<int> GetTheValidationListOfCharacteristics(string message)
+        static public List<int> GetTheValidationCharacteristicsForFindingGoods(string message)
         {
             return GetTheValidationInput(message, input =>
             {
                 return input.Split(',').Select(int.Parse).ToList();
             }, elements =>
             {
-                return !HasDuplicates(elements);
+                return !HasDuplicates(elements) && CharacteristicsInTheRangeForFindingGoods(elements);
             });
         }
 
-       
-        
+        static public List<int> GetTheValidationCharacteristicsForEditingFood(string message)
+        {
+            return GetTheValidationInput(message, input =>
+            {
+                return input.Split(',').Select(int.Parse).ToList();
+            }, elements =>
+            {
+                return !HasDuplicates(elements) && CharacteristicsInTheRangeForEditingFood(elements);
+            });
+        }
+
+        static public List<int> GetTheValidationCharacteristicsForEditingClothing(string message)
+        {
+            return GetTheValidationInput(message, input =>
+            {
+                return input.Split(',').Select(int.Parse).ToList();
+            }, elements =>
+            {
+                return !HasDuplicates(elements) && CharacteristicsInTheRangeForEditingClothing(elements);
+            });
+        }
+
+        static public List<int> GetTheValidationCharacteristicsForEditingElectronics(string message)
+        {
+            return GetTheValidationInput(message, input =>
+            {
+                return input.Split(',').Select(int.Parse).ToList();
+            }, elements =>
+            {
+                return !HasDuplicates(elements) && CharacteristicsInTheRangeForEditingElectronics(elements);
+            });
+        }
+
+
+
         private static bool HasDuplicates(List<int> characteristics)
         {
             HashSet<int> unique = new HashSet<int>();
@@ -173,6 +206,43 @@ namespace Warehouse
             }
             return false;
         }
+
+
+
+        private static bool CharacteristicsInTheRange(List<int> characteristics, int numberFrom, int numberTo)
+        {
+            foreach (int item in characteristics)
+            {
+                if(item < numberFrom || item > numberTo)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool CharacteristicsInTheRangeForFindingGoods(List<int> options)
+        {
+            return CharacteristicsInTheRange(options, 1, 16);
+        }
+
+        public static bool CharacteristicsInTheRangeForEditingFood(List<int> characteristics)
+        {
+            return CharacteristicsInTheRange(characteristics, 1, 6);
+        }
+
+        public static bool CharacteristicsInTheRangeForEditingClothing(List<int> characteristics)
+        {
+            return CharacteristicsInTheRange(characteristics, 1, 8);
+        }
+
+        public static bool CharacteristicsInTheRangeForEditingElectronics(List<int> characteristics)
+        {
+            return CharacteristicsInTheRange(characteristics, 1, 7);
+        }
+
+
 
         private static bool HasTheType(string input)
         {

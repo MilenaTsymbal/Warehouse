@@ -85,7 +85,6 @@ namespace Warehouse
 
         private static string FormatUnitPrice(double unitPrice)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             return unitPrice.ToString(CultureInfo.InvariantCulture);
         }
 
