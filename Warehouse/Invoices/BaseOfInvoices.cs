@@ -13,5 +13,18 @@ namespace Warehouse
         {
             allInvoices = new List<Invoice>();
         }
+
+        public static int CountNumberOfInvoices(BaseOfInvoices invoices)
+        {
+            int count = 0;
+
+            foreach (Invoice invoice in invoices)
+            {
+                    count++;
+            }
+
+            return count + 1;
+        }
+
     }
 }

@@ -7,16 +7,22 @@ namespace Warehouse
     {
         static void Main(string[] args)
         {
+            Warehouse goods = new Warehouse();
+
             BaseOfInvoices incomeInvoices = new BaseOfInvoices();
-            FileWork.AddExistingIncomeInvoices(incomeInvoices);
 
             BaseOfInvoices expenceInvoices = new BaseOfInvoices();
-            FileWork.AddExistingExpenceInvoices(expenceInvoices);
+           
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(ConsoleExit!);
 
-            Warehouse goods = new Warehouse();
-            FileWork.AddExistingGoods(goods);
+            FileWork.DownloadData(goods, incomeInvoices, expenceInvoices);
+
             WorkingWithTheProgram(goods, incomeInvoices, expenceInvoices);
 
+            void ConsoleExit(object sender, EventArgs e)
+            {
+                FileWork.UploadData(goods, incomeInvoices, expenceInvoices);
+            }
         }
 
         public static void WorkingWithTheProgram(Warehouse goods, BaseOfInvoices incomeInvoices, BaseOfInvoices expenceInvoices)
@@ -55,6 +61,7 @@ namespace Warehouse
                             Print.ExpenceInvoices(expenceInvoices);
                             break;
                         case "exit":
+                            FileWork.UploadData(goods, incomeInvoices, expenceInvoices);
                             return;
                         default:
                             Print.Message(ConsoleColor.Red, "\n\nInvalid command! Try to rewrite a command.\n");

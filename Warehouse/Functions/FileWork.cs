@@ -14,7 +14,7 @@ namespace Warehouse
         private static readonly string filePathToIncomeInvoices = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Database\IncomeInvoices.txt";
         private static readonly string filePathToExpenceInvoices = @"C:\Users\Админ\source\repos\Warehouse\Warehouse\Database\ExpenceInvoices.txt";
 
-        public static void AddExistingGoods(Warehouse allGoods)
+        private static void AddExistingGoods(Warehouse allGoods)
         {
             try
             {
@@ -31,24 +31,7 @@ namespace Warehouse
             }
         }
 
-
-
-        public static void AddNewGoodsToFile(Warehouse allGoods)
-        {
-            int lastLineNumber = File.ReadLines(filePathToGoods).Count();
-            string arrayString = "";
-
-            using (StreamWriter writer = new StreamWriter(filePathToGoods, true))
-            {
-                for (int i = lastLineNumber; i < allGoods.Count; i++)
-                {
-                    arrayString = FormatGood(allGoods[i]);
-                    writer.WriteLine(arrayString);
-                }
-            }
-        }
-
-        public static void RewriteGoodsInFile(Warehouse allGoods)
+        private static void RewriteGoodsInFile(Warehouse allGoods)
         {
 
             using (StreamWriter writer = new StreamWriter(filePathToGoods, false))
@@ -129,79 +112,45 @@ namespace Warehouse
             }
         }
 
-        public static void AddExistingIncomeInvoices(BaseOfInvoices invoices)
+        private static void AddExistingIncomeInvoices(BaseOfInvoices invoices)
         {
             AddExistingInvoices(invoices, filePathToIncomeInvoices);
         }
 
-        public static void AddExistingExpenceInvoices(BaseOfInvoices invoices)
+        private static void AddExistingExpenceInvoices(BaseOfInvoices invoices)
         {
             AddExistingInvoices(invoices, filePathToExpenceInvoices);
         }
 
 
 
-        private static void AddNewInvoice(Invoice invoice, string filepath)
+        private static void RewriteInvoices(BaseOfInvoices invoices, string filepath)
         {
-            using (StreamWriter writer = new StreamWriter(filepath, true))
+            using (StreamWriter writer = new StreamWriter(filepath, false))
             {
-                writer.WriteLine(invoice.NumberOfInvoice);
-                writer.WriteLine(invoice.DateOfMakingInvoice);
-
-                foreach (Good good in invoice)
+                foreach(Invoice invoice in invoices)
                 {
-                    writer.WriteLine(FormatGood(good));
-                }
+                    writer.WriteLine(invoice.NumberOfInvoice);
+                    writer.WriteLine(invoice.DateOfMakingInvoice);
 
-            }
-        }
-
-        public static void AddNewIncomeInvoice(Invoice incomeInvoice)
-        {
-            AddNewInvoice(incomeInvoice, filePathToIncomeInvoices);
-        }
-
-        public static void AddNewExpenceInvoice(Invoice expenceInvoice)
-        {
-            AddNewInvoice(expenceInvoice, filePathToExpenceInvoices);
-        }
-
-
-
-        private static int CountNumericLines(string filePath)
-        {
-            int count = 0;
-            string[] lines = File.ReadAllLines(filePath);
-            foreach (string line in lines)
-            {
-                bool isNumeric = true;
-                foreach (char c in line)
-                {
-                    if (!Char.IsDigit(c))
+                    foreach (Good good in invoice)
                     {
-                        isNumeric = false;
-                        break;
+                        writer.WriteLine(FormatGood(good));
                     }
                 }
-                if (isNumeric)
-                {
-                    count++;
-                }
+                
             }
-
-            return count;
         }
 
-        public static int CountIncomeInvoices()
+        private static void RewriteIncomeInvoices(BaseOfInvoices incomeInvoices)
         {
-            return CountNumericLines(filePathToIncomeInvoices);
+            RewriteInvoices(incomeInvoices, filePathToIncomeInvoices);
         }
 
-        public static int CountExpenceInvoices()
+        private static void RewriteExpenceInvoices(BaseOfInvoices expenceInvoices)
         {
-            return CountNumericLines(filePathToExpenceInvoices);
+            RewriteInvoices(expenceInvoices, filePathToExpenceInvoices);
         }
-
 
 
         private static Good AddExistingTypeOfGood(string line)
@@ -219,6 +168,21 @@ namespace Warehouse
                 default:
                     throw new ArgumentException("Unsupported type of Good");
             }
+        }
+
+
+        public static void DownloadData(Warehouse goods, BaseOfInvoices incomeInvoices, BaseOfInvoices expenceInvoices)
+        {
+            AddExistingGoods(goods);
+            AddExistingIncomeInvoices(incomeInvoices);
+            AddExistingExpenceInvoices(expenceInvoices);
+        }
+
+        public static void UploadData(Warehouse goods, BaseOfInvoices incomeInvoices, BaseOfInvoices expenceInvoices)
+        {
+            RewriteGoodsInFile(goods);
+            RewriteIncomeInvoices(incomeInvoices);
+            RewriteExpenceInvoices(expenceInvoices);
         }
 
     }

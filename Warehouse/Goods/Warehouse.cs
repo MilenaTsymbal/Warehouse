@@ -18,7 +18,7 @@ namespace Warehouse
         public void AddNewGoods(BaseOfInvoices incomeInvoices)
         {
             Invoice addedGoods = new Invoice();
-            addedGoods.NumberOfInvoice = FileWork.CountIncomeInvoices() + 1;
+            addedGoods.NumberOfInvoice = BaseOfInvoices.CountNumberOfInvoices(incomeInvoices);
             addedGoods.DateOfMakingInvoice = DateTime.Now;
 
             int lastItem = Count;
@@ -36,8 +36,6 @@ namespace Warehouse
                 }
                 Console.WriteLine();
 
-                FileWork.AddNewGoodsToFile(this);
-                FileWork.AddNewIncomeInvoice(addedGoods);
                 incomeInvoices.Add(addedGoods);
                 Print.IncomeInvoice(addedGoods);
             }
@@ -94,19 +92,18 @@ namespace Warehouse
 
             Warehouse editedGoods = new Warehouse();
 
-            int amountOfGoodsForChange = Validator.GetTheValidationNumberOfGoods("\n\nEnter the number of goods that will be changed: ");
+            int amountOfGoodsForChange = Validator.GetTheValidationNumberOfGoods("\n\nEnter the number of goods that will be changed: ", this);
 
             if (amountOfGoodsForChange > 0)
             {
                 for (int i = 0; i < amountOfGoodsForChange; i++)
                 {
-                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\nEnter the number of a good ({i + 1}/{amountOfGoodsForChange}) that you want to change: ");
+                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\nEnter the number of a good ({i + 1}/{amountOfGoodsForChange}) that you want to change: ", this);
 
                     EditGoodCharacteristics(indexOfGood);
                     editedGoods.Add(this[indexOfGood - 1]);
                 }
 
-                FileWork.RewriteGoodsInFile(this);
                 Print.ListAfetrEditing(editedGoods);
             }
             else
@@ -139,16 +136,16 @@ namespace Warehouse
             Print.PrintGoods<Good>(this, "List of all goods");
 
             Invoice deletedGoods = new Invoice();
-            deletedGoods.NumberOfInvoice = FileWork.CountExpenceInvoices() + 1;
+            deletedGoods.NumberOfInvoice = BaseOfInvoices.CountNumberOfInvoices(expenceInvoices);
             deletedGoods.DateOfMakingInvoice = DateTime.Now;
 
-            int amountOfGoodsForDeletion = Validator.GetTheValidationNumberOfGoods("\nEnter the number of goods that will be deleted: ");
+            int amountOfGoodsForDeletion = Validator.GetTheValidationNumberOfGoods("\nEnter the number of goods that will be deleted: ", this);
 
             if (amountOfGoodsForDeletion > 0)
             {
                 for (int i = 0; i < amountOfGoodsForDeletion; i++)
                 {
-                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\n\nEnter the number of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be dispatched: ");
+                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\n\nEnter the number of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be dispatched: ", this);
                     int amountForDeletion = Validator.GetTheValidationAmountForDeletion($"\nEnter the number of amount of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be dispatched: ", this[indexOfGood - 1]);
 
                     if (amountForDeletion < this[indexOfGood - 1].Amount)
@@ -166,8 +163,6 @@ namespace Warehouse
 
                 expenceInvoices.Add(deletedGoods);
                 Print.ExpenceInvoice(deletedGoods);
-                FileWork.AddNewExpenceInvoice(deletedGoods);
-                FileWork.RewriteGoodsInFile(this);
             }
             else
             {
