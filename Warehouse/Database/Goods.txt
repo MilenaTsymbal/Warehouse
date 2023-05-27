@@ -5,11 +5,12 @@ food,chocolate,pack,10,5000,08.08.2023 0:00:00,02.07.2023 0:00:00
 food,cookies,pack,20,1990,08.08.2023 0:00:00,01.01.2023 0:00:00
 food,soup,pack,35,1490,08.08.2023 0:00:00,11.04.2023 21:24:40
 food,soup,pack,35.66,1490,08.08.2023 0:00:00,11.04.2023 21:24:40
-electronics,cell-phone,iphonex,Apple,piece,12000,7000,11.04.2023 21:24:40
+electronics,mobile-phone,iphonex,Apple,piece,15000,7000,11.04.2023 21:24:40
 food,pancake,pack,50,2000,03.05.2026 0:00:00,12.04.2023 0:00:00
-electronics,laptop,a78,lego,piece,2444.99,9600,05.10.2023 0:00:00
+electronics,notebook,a78,lego,piece,2444.99,9600,05.10.2023 0:00:00
 food,flour,kg,1.55,10,11.06.2023 0:00:00,12.05.0023 0:00:00
 clothing,dress,s,purple,LG,piece,1000,4000,12.05.2023 0:00:00
-food,prawns,kg,300,25,06.12.2023 0:00:00,05.12.2023 0:00:00
+food,prawn,kg,300,25,06.12.2023 0:00:00,05.12.2023 0:00:00
 food,milk,l,26,995,05.06.2023 0:00:00,05.12.2023 0:00:00
-clothing,skirt,s,white,ff,piece,150,1000,17.05.2023 0:00:00
+clothing,skirt,m,pink,lv,piece,300,1000,26.05.2023 17:00:00
+food,milk,l,25,1300,26.06.2023 0:00:00,26.05.2023 17:30:00

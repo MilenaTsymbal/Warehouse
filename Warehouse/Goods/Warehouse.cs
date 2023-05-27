@@ -145,8 +145,11 @@ namespace Warehouse
             {
                 for (int i = 0; i < amountOfGoodsForDeletion; i++)
                 {
-                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\n\nEnter the number of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be dispatched: ", this);
-                    int amountForDeletion = Validator.GetTheValidationAmountForDeletion($"\nEnter the number of amount of a good ({i + 1}/{amountOfGoodsForDeletion}) that will be dispatched: ", this[indexOfGood - 1]);
+                    int indexOfGood = Validator.GetTheValidationNumberOfGoods($"\n\nEnter the number of a good ({i + 1}/" +
+                        $"{amountOfGoodsForDeletion}) that will be dispatched: ", this);
+                    int amountForDeletion = Validator.GetTheValidationAmountForDeletion($"\nEnter" +
+                        $" the number of amount of a good ({i + 1}/{amountOfGoodsForDeletion}) " +
+                        $"that will be dispatched: ", this[indexOfGood - 1]);
 
                     if (amountForDeletion < this[indexOfGood - 1].Amount)
                     {

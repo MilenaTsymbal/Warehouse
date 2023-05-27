@@ -13,17 +13,12 @@ namespace Warehouse
 {
     internal class Validator
     {
-        static public T GetTheValidationInput<T>(string message, Func<string, T> parser, Func<T, bool>? validator = null, bool allowNullInput = false)
+        static public T GetTheValidationInput<T>(string message, Func<string, T> parser, Func<T, bool>? validator = null)
         {
             while (true)
             {
                 Console.Write(message);
                 string? input = Console.ReadLine();
-
-                if (allowNullInput && string.IsNullOrWhiteSpace(input))
-                {
-                    return GetDefaultValue<T>();
-                }
 
                 try
                 {
@@ -49,26 +44,6 @@ namespace Warehouse
             }
         }
 
-        static T GetDefaultValue<T>()
-        {
-            if (typeof(T) == typeof(string))
-            {
-                return (T)(object)"";
-            }
-            else if (typeof(T) == typeof(int))
-            {
-                return (T)(object)0;
-            }
-            else if (typeof(T) == typeof(DateTime))
-            {
-                return (T)(object)DateTime.MinValue;
-            }
-            else
-            {
-                return default!;
-            }
-        }
-
         //for number that exsists in the range of excisting goods
         static public int GetTheValidationNumberOfGoods(string message, Warehouse goods)
         {
@@ -80,59 +55,59 @@ namespace Warehouse
 
 
         //for string inputs of characteristics
-        static public string GetTheValidationGoodCharacteristic(string message, bool allowNullInput = false)
+        static public string GetTheValidationGoodCharacteristic(string message)
         {
             return GetTheValidationInput(message, s => s.ToLower(), userInput =>
             {
                 return (!string.IsNullOrEmpty(userInput) && ContainsNoNumbers(userInput));
-            }, allowNullInput);
+            });
         }
 
-        static public string GetTheValidationType(string message, bool allowNullInput = false)
+        static public string GetTheValidationType(string message)
         {
             return GetTheValidationInput(message, input =>
             {
                 return input.ToLower();
-            }, HasTheType, allowNullInput);
+            }, HasTheType);
         }
 
-        static public double GetTheValidationUnitPrice(string message, bool allowNullInput = false)
+        static public double GetTheValidationUnitPrice(string message)
         {
             return GetTheValidationInput(message, double.Parse, userInput =>
             {
                 return userInput > 0 && userInput == Math.Round(userInput, 2);
-            }, allowNullInput);
+            });
         }
 
-        static public int GetTheValidationAmount(string message, bool allowNullInput = false)
+        static public int GetTheValidationAmount(string message)
         {
             return GetTheValidationInput(message, int.Parse, userInput =>
             {
                 return userInput > 0;
-            }, allowNullInput);
+            });
         }
        
-        static public DateTime GetTheValidationDateTime(string message, bool allowNullInput = false)
+        static public DateTime GetTheValidationDateTime(string message)
         {
             return GetTheValidationInput(message, DateTime.Parse, input =>
             {
                 DateTime dateNow = DateTime.Now;
 
                 return input <= dateNow;
-            }, allowNullInput);
+            });
         }
 
-        static public string GetTheValidationSize(string message, bool allowNullInput = false)
+        static public string GetTheValidationSize(string message)
         {
-            return GetTheValidationInput(message, s => s, HasTheSize, allowNullInput);
+            return GetTheValidationInput(message, s => s, HasTheSize);
         }
 
-        static public string GetTheValidationModel(string message, bool allowNullInput = false)
+        static public string GetTheValidationModel(string message)
         {
             return GetTheValidationInput(message, s => s.ToLower(), userInput =>
             {
                 return !string.IsNullOrEmpty(userInput);
-            }, allowNullInput);
+            });
         }
 
         static public int GetTheValidationAmountForDeletion(string message, Good good)
