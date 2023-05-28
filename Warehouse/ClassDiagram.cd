@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Warehouse.Good">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JAAAIAAAAAACAAAAAAAAAACAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\Good.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.Clothing">
+    <Position X="2.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAABAAA=</HashCode>
+      <FileName>Models\Clothing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.Electronics">
+    <Position X="2.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgABAAAAEA=</HashCode>
+      <FileName>Models\Electronics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.Food">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Models\Food.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.Warehouse">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAgAAAioAgAAAABAAAAAAAAAAAAAACAIAAAAAA=</HashCode>
+      <FileName>Models\Warehouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.BaseOfInvoices" Collapsed="true">
+    <Position X="6.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseOfInvoices.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.Invoice">
+    <Position X="6.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAQAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Invoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.FileWork" Collapsed="true">
+    <Position X="12" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABCAAADACCAAAAAAEgAAjAAEKAIAAAQAAAAAAAAACA=</HashCode>
+      <FileName>Utilities\FileWork.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.FindGoods" Collapsed="true">
+    <Position X="12" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIAAAAAACgBCAAQAAAAABAAAAAAAkAAhQhAQBDAA=</HashCode>
+      <FileName>Utilities\FindGoods.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Warehouse.Print" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAQEAAAIAAAAAAwAAAAAAAgACAAEYGAEAAA=</HashCode>
+      <FileName>Utilities\Print.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.TotalSum" Collapsed="true">
+    <Position X="12" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\TotalSum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Warehouse.Validator" Collapsed="true">
+    <Position X="12" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAAACAAAAAIAAgAASgAACQAgAgAAAJIIAQAADgAAg=</HashCode>
+      <FileName>Utilities\Validator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
