@@ -185,5 +185,70 @@ namespace Warehouse
             RewriteExpenceInvoices(expenceInvoices);
         }
 
+
+        public static void SaveFoundGoods(Warehouse foundGoods)
+        {
+            string folderPath = @"C:\Users\Админ\Desktop\Знайдені товари";
+
+            List<string> foundProducts = new List<string>();
+
+            foreach (Good good in foundGoods)
+            {
+                foundProducts.Add(FormatGood(good));
+            }
+
+            CreateAndWriteToFile(folderPath, foundProducts);
+        }
+
+        private static void CreateAndWriteToFile(string folderPath, List<string> foundProducts)
+        {
+            try
+            {
+                if(foundProducts.Count != 0)
+                {
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string[] existingFiles = Directory.GetFiles(folderPath);
+
+                    string fileName;
+                    int existingFilesCount = 0;
+
+                    foreach (string filepath in existingFiles)
+                    {
+                        fileName = Path.GetFileNameWithoutExtension(filepath);
+                        if (fileName.StartsWith("found goods"))
+                        {
+                            existingFilesCount++;
+                        }
+                    }
+
+                    string newFileName = $"found goods {existingFilesCount + 1}.txt";
+
+                    string filePath = Path.Combine(folderPath, newFileName);
+                    using (StreamWriter writer = new StreamWriter(filePath))
+                    {
+                        foreach (string product in foundProducts)
+                        {
+                            writer.WriteLine(product);
+                        }
+                    }
+
+                    Print.Message(ConsoleColor.DarkYellow, $"\n File \"{newFileName}\" was succesfully created and information about found goods was already written.\n");
+                }
+                else
+                {
+                    Print.Message(ConsoleColor.Red, $"\n New file wasn't created, because no goods were found by these characteristics.\n");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Mistake occured: {ex.Message}");
+            }
+        }
+
     }
 }

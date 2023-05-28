@@ -53,40 +53,48 @@ namespace Warehouse
 
         public static void PrintGoods<T>(Warehouse goods, string title, DateTime? dateOfMakingInvoice = null, List<Good>? totalSumOfGood = null) where T : Good
         {
-            Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
-            if(dateOfMakingInvoice != null)
+            if(goods.Count != 0)
             {
-                Console.WriteLine($"\n\t\t\t\t\t\t\t\t{dateOfMakingInvoice}\n");
-            }
-            int counter = 1;
-            var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
-        "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
-
-            foreach (Good item in goods)
-            {
-                table.AddRow(
-                     counter++,
-                        item.Category.ToLower(),
-                        item.NameOfGood.ToLower(),
-                        item is Clothing clothingSize ? clothingSize.Size.ToLower() : "",
-                        item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
-                        item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
-                        item is Electronics electronicsModel ? electronicsModel.Model : "",
-                        item is Electronics electronicsCompany ? (electronicsCompany.Company.Substring(0, 1).ToUpper() + electronicsCompany.Company.Substring(1).ToLower()) : "",
-                        item.UnitOfMeasure,
-                        $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
-                        item.Amount,
-                        item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate.ToShortDateString() : "",
-                        item.DateOfLastDelivery);
-
-                if (totalSumOfGood != null)
+                Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
+                if (dateOfMakingInvoice != null)
                 {
-                    totalSumOfGood.Add(item);
+                    Console.WriteLine($"\n\t\t\t\t\t\t\t\t{dateOfMakingInvoice}\n");
                 }
-            }
+                int counter = 1;
+                var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
+            "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
 
-            Console.Write(table.ToString());
-            Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah\n");
+                foreach (Good item in goods)
+                {
+                    table.AddRow(
+                         counter++,
+                            item.Category.ToLower(),
+                            item.NameOfGood.ToLower(),
+                            item is Clothing clothingSize ? clothingSize.Size.ToLower() : "",
+                            item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
+                            item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
+                            item is Electronics electronicsModel ? electronicsModel.Model : "",
+                            item is Electronics electronicsCompany ? (electronicsCompany.Company.Substring(0, 1).ToUpper() + electronicsCompany.Company.Substring(1).ToLower()) : "",
+                            item.UnitOfMeasure,
+                            $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
+                            item.Amount,
+                            item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate.ToShortDateString() : "",
+                            item.DateOfLastDelivery);
+
+                    if (totalSumOfGood != null)
+                    {
+                        totalSumOfGood.Add(item);
+                    }
+                }
+
+                Console.Write(table.ToString());
+                Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah\n");
+            }
+            else
+            {
+                Message(ConsoleColor.Red, "\nNo goods were found.");
+            }
+            
         }
 
 

@@ -221,6 +221,7 @@ namespace Warehouse
                 }
             }
             Print.ListOfFindedGoods(foundGoods);
+            FileWork.SaveFoundGoods(foundGoods);
         }
 
         private bool IsGoodMatchingCriteria(Good good, FindGoods findGoods)
