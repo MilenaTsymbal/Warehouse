@@ -37,7 +37,7 @@ namespace Warehouse
                 Console.WriteLine();
 
                 incomeInvoices.Add(addedGoods);
-                Print.IncomeInvoice(addedGoods);
+                Print.PrintIncomeInvoice(addedGoods);
             }
             else
             {
@@ -165,7 +165,7 @@ namespace Warehouse
                 }
 
                 expenceInvoices.Add(deletedGoods);
-                Print.ExpenceInvoice(deletedGoods);
+                Print.PrintExpenceInvoice(deletedGoods);
             }
             else
             {
@@ -220,8 +220,8 @@ namespace Warehouse
                     foundGoods.Add(good);
                 }
             }
-            Print.ListOfFindedGoods(foundGoods);
-            FileWork.SaveFoundGoods(foundGoods, findGoods);
+            Print.ListOfFoundGoods(foundGoods);
+            FileWork.CreateAndWriteToFile(foundGoods, findGoods);
         }
 
         private bool IsGoodMatchingCriteria(Good good, FindGoods findGoods)

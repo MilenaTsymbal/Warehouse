@@ -1,6 +1,6 @@
 ﻿namespace Warehouse
 {
-    internal class Electronics : Good
+    public class Electronics : Good
     {
         public string Model { get; set; }
         public string Company { get; set; }

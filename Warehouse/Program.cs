@@ -55,10 +55,10 @@ namespace Warehouse
                             goods.FindGoods();
                             break;
                         case "6":
-                            Print.IncomeInvoices(incomeInvoices);
+                            Print.PrintIncomeInvoices(incomeInvoices);
                             break;
                         case "7":
-                            Print.ExpenceInvoices(expenceInvoices);
+                            Print.PrintExpenceInvoices(expenceInvoices);
                             break;
                         case "exit":
                             FileWork.UploadData(goods, incomeInvoices, expenceInvoices);

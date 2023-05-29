@@ -2,7 +2,7 @@
 
 namespace Warehouse
 {
-    internal class Clothing : Good
+    public class Clothing : Good
     {
         public string Size { get; set; }
         public string Color { get; set; }

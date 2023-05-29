@@ -8,15 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ClassDiagram.cd" />
+    <Compile Remove="Invoices\**" />
+    <EmbeddedResource Remove="Invoices\**" />
+    <None Remove="Invoices\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ConsoleTables" Version="2.4.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Invoices\" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ using ConsoleTables;
 
 namespace Warehouse
 {
-    internal class Print
+    public class Print
     {
         public delegate void GoodsPrinter(Warehouse allGoods);
         public static void WayOfPrinting(Warehouse allGoods, GoodsPrinter? printGoodsTogether = null, bool printCategoriesOfGoods = false)
@@ -53,48 +53,71 @@ namespace Warehouse
 
         public static void PrintGoods<T>(Warehouse goods, string title, DateTime? dateOfMakingInvoice = null, List<Good>? totalSumOfGood = null) where T : Good
         {
-            if(goods.Count != 0)
+            if (goods.Count != 0)
             {
-                Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
-                if (dateOfMakingInvoice != null)
-                {
-                    Console.WriteLine($"\n\t\t\t\t\t\t\t\t{dateOfMakingInvoice}\n");
-                }
-                int counter = 1;
-                var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
-            "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
-
-                foreach (Good item in goods)
-                {
-                    table.AddRow(
-                         counter++,
-                            item.Category.ToLower(),
-                            item.NameOfGood.ToLower(),
-                            item is Clothing clothingSize ? clothingSize.Size.ToLower() : "",
-                            item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
-                            item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
-                            item is Electronics electronicsModel ? electronicsModel.Model : "",
-                            item is Electronics electronicsCompany ? (electronicsCompany.Company.Substring(0, 1).ToUpper() + electronicsCompany.Company.Substring(1).ToLower()) : "",
-                            item.UnitOfMeasure,
-                            $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
-                            item.Amount,
-                            item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate.ToShortDateString() : "",
-                            item.DateOfLastDelivery);
-
-                    if (totalSumOfGood != null)
-                    {
-                        totalSumOfGood.Add(item);
-                    }
-                }
-
-                Console.Write(table.ToString());
-                Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah\n");
+                PrintTitle(title);
+                PrintDateOfMakingInvoice(dateOfMakingInvoice);
+                PrintGoodsTable(goods, totalSumOfGood);
             }
             else
             {
                 Message(ConsoleColor.Red, "\nNo goods were found.");
             }
-            
+        }
+        private static void PrintTitle(string title)
+        {
+            Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
+        }
+        private static void PrintDateOfMakingInvoice(DateTime? dateOfMakingInvoice)
+        {
+            if (dateOfMakingInvoice != null)
+            {
+                Console.WriteLine($"\n\t\t\t\t\t\t\t\t{dateOfMakingInvoice}\n");
+            }
+        }
+        private static void PrintGoodsTable(Warehouse goods, List<Good>? totalSumOfGood)
+        {
+            int counter = 1;
+            var table = CreateConsoleTable(goods, counter, totalSumOfGood);
+
+            Console.Write(table.ToString());
+            Console.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(totalSumOfGood == null ? goods : totalSumOfGood!)} uah\n");
+        }
+        private static ConsoleTable CreateConsoleTable(Warehouse goods, int counter, List<Good>? totalSumOfGood)
+        {
+            var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
+                "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
+
+            foreach (Good item in goods)
+            {
+                AddRowToTable(table, item, counter);
+
+                if (totalSumOfGood != null)
+                {
+                    totalSumOfGood.Add(item);
+                }
+
+                counter++;
+            }
+
+            return table;
+        }
+        private static void AddRowToTable(ConsoleTable table, Good item, int counter)
+        {
+            table.AddRow(
+                counter,
+                item.Category.ToLower(),
+                item.NameOfGood.ToLower(),
+                item is Clothing clothingSize ? clothingSize.Size.ToLower() : "",
+                item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
+                item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
+                item is Electronics electronicsModel ? electronicsModel.Model : "",
+                item is Electronics electronicsCompany ? (electronicsCompany.Company.Substring(0, 1).ToUpper() + electronicsCompany.Company.Substring(1).ToLower()) : "",
+                item.UnitOfMeasure,
+                $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
+                item.Amount,
+                item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate.ToShortDateString() : "",
+                item.DateOfLastDelivery);
         }
 
 
@@ -198,9 +221,9 @@ namespace Warehouse
             WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Edited goods"));
         }
 
-        public static void ListOfFindedGoods(Warehouse allGoods)
+        public static void ListOfFoundGoods(Warehouse allGoods)
         {
-            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Finded goods"), true);
+            WayOfPrinting(allGoods, (goods) => PrintGoods<Good>(goods, "Found goods"), true);
         }
 
 
@@ -211,12 +234,12 @@ namespace Warehouse
             PrintGoods<Good>(invoice, $"{title} {invoice.NumberOfInvoice}", invoice.DateOfMakingInvoice);
         }
 
-        public static void IncomeInvoice(Invoice invoice)
+        public static void PrintIncomeInvoice(Invoice invoice)
         {
             PrintInvoice(invoice, "Income invoice");
         }
 
-        public static void ExpenceInvoice(Invoice invoice)
+        public static void PrintExpenceInvoice(Invoice invoice)
         {
             PrintInvoice(invoice, "Expence invoice");
         }
@@ -231,12 +254,12 @@ namespace Warehouse
             }
         }
 
-        public static void IncomeInvoices(BaseOfInvoices incomeInvoice)
+        public static void PrintIncomeInvoices(BaseOfInvoices incomeInvoice)
         {
             PrintInvoices(incomeInvoice, "Income invoice");
         }
 
-        public static void ExpenceInvoices(BaseOfInvoices expenceInvoice)
+        public static void PrintExpenceInvoices(BaseOfInvoices expenceInvoice)
         {
             PrintInvoices(expenceInvoice, "Expence invoice");
         }

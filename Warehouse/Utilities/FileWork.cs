@@ -34,6 +34,7 @@ namespace Warehouse
             }
         }
 
+
         private static void RewriteGoodsInFile(Warehouse allGoods)
         {
 
@@ -87,14 +88,12 @@ namespace Warehouse
                 {
                     if (int.TryParse(line, out int invoiceNumber))
                     {
-                        // Если строка начинается с числа, то это номер счета-фактуры
                         Invoice invoice = new Invoice();
                         invoice.NumberOfInvoice = invoiceNumber;
                         invoiceList.Add(invoice);
                     }
                     else if (DateTime.TryParse(line, out DateTime date))
                     {
-                        // Если строка является датой, то это дата создания счета-фактуры
                         invoiceList[invoiceList.Count - 1].DateOfMakingInvoice = date;
                     }
                     else
@@ -103,7 +102,6 @@ namespace Warehouse
                     }
                 }
 
-                // Добавляем все накладные в базу
                 foreach (Invoice invoice in invoiceList)
                 {
                     invoices.Add(invoice);
@@ -156,6 +154,7 @@ namespace Warehouse
         }
 
 
+
         private static Good AddExistingTypeOfGood(string line)
         {
             string[] values = line.Split(',');
@@ -189,104 +188,116 @@ namespace Warehouse
         }
 
 
-        public static void SaveFoundGoods(Warehouse foundGoods, FindGoods findGoods)
+
+        public static void CreateAndWriteToFile(Warehouse foundGoods, FindGoods findGoods)
         {
             string folderPath = @"C:\Users\Админ\Desktop\Found goods";
 
-            //List<string> foundProducts = new List<string>();
-
-            //foreach (Good good in foundGoods)
-            //{
-            //    foundProducts.Add(FormatGood(good));
-            //}
-
-            CreateAndWriteToFile(folderPath, foundGoods, findGoods);
-        }
-
-        private static void CreateAndWriteToFile(string folderPath, Warehouse foundGoods, FindGoods findGoods)
-        {
             try
             {
                 if (foundGoods.Count != 0)
                 {
-                    if (!Directory.Exists(folderPath))
-                    {
-                        Directory.CreateDirectory(folderPath);
-                    }
+                    CreateDirectoryIfNotExists(folderPath);
 
-                    string[] existingFiles = Directory.GetFiles(folderPath);
-
-                    string fileName;
-                    int existingFilesCount = 0;
-
-                    foreach (string filepath in existingFiles)
-                    {
-                        fileName = Path.GetFileNameWithoutExtension(filepath);
-                        if (fileName.StartsWith("found goods"))
-                        {
-                            existingFilesCount++;
-                        }
-                    }
-
-                    string newFileName = $"found goods {existingFilesCount + 1}.txt";
+                    string newFileName = GenerateNewFileName(folderPath);
 
                     string filePath = Path.Combine(folderPath, newFileName);
+
                     using (StreamWriter writer = new StreamWriter(filePath))
                     {
-                        writer.WriteLine("Search was made by these characteristics:");
-
-                        foreach (PropertyInfo property in typeof(FindGoods).GetProperties())
-                        {
-                            object value = property.GetValue(findGoods)!;
-                            object defaultValue = property.PropertyType.IsValueType ? Activator.CreateInstance(property.PropertyType)! : "";
-
-                            if (value != null && !value.Equals(defaultValue))
-                            {
-                                writer.WriteLine($"{property.Name}: {value}");
-                            }
-                        }
-
+                        WriteSearchCharacteristics(writer, findGoods);
                         writer.WriteLine(" ");
 
-                        var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
-            "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
-                        int counter = 1;
+                        var table = CreateConsoleTable(foundGoods);
+                        WriteGoodsTableToFile(writer, table);
 
-                        foreach (Good item in foundGoods)
-                        {
-                            table.AddRow(
-                                 counter++,
-                                    item.Category.ToLower(),
-                                    item.NameOfGood.ToLower(),
-                                    item is Clothing clothingSize ? clothingSize.Size.ToLower() : "",
-                                    item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
-                                    item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
-                                    item is Electronics electronicsModel ? electronicsModel.Model : "",
-                                    item is Electronics electronicsCompany ? (electronicsCompany.Company.Substring(0, 1).ToUpper() + electronicsCompany.Company.Substring(1).ToLower()) : "",
-                                    item.UnitOfMeasure,
-                                    $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
-                                    item.Amount,
-                                    item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate.ToShortDateString() : "",
-                                    item.DateOfLastDelivery);
-
-                        }
-                        writer.WriteLine("\n\t\t\t\t\t\t\t\tFound goods\n");
-                        writer.WriteLine(table.ToString());
-                        writer.WriteLine($"\n\n Total sum: {TotalSum.CalculateTotalSum(foundGoods)} uah\n");
+                        writer.WriteLine("\n\n Total sum: {0} uah\n", TotalSum.CalculateTotalSum(foundGoods));
                     }
 
-                    Print.Message(ConsoleColor.DarkYellow, $"\n File \"{newFileName}\" was succesfully created and information about found goods was already written.\n");
+                    Print.Message(ConsoleColor.DarkYellow, $"\n File \"{newFileName}\" was successfully created, and information about found goods was written.\n");
                 }
                 else
                 {
-                    Print.Message(ConsoleColor.Red, $"\n New file wasn't created, because no goods were found by these characteristics.\n");
+                    Print.Message(ConsoleColor.Red, $"\n No goods were found with the specified characteristics. A new file was not created.\n");
                 }
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Mistake occured: {ex.Message}");
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
+        }
+
+        private static void CreateDirectoryIfNotExists(string folderPath)
+        {
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+        }
+
+        private static string GenerateNewFileName(string folderPath)
+        {
+            string[] existingFiles = Directory.GetFiles(folderPath);
+
+            int existingFilesCount = existingFiles.Count(filepath => Path.GetFileNameWithoutExtension(filepath).StartsWith("found goods"));
+
+            return $"found goods {existingFilesCount + 1}.txt";
+        }
+
+        private static void WriteSearchCharacteristics(StreamWriter writer, FindGoods findGoods)
+        {
+            writer.WriteLine("Search was made by these characteristics:");
+
+            foreach (PropertyInfo property in typeof(FindGoods).GetProperties())
+            {
+                object value = property.GetValue(findGoods)!;
+                object defaultValue = property.PropertyType.IsValueType ? Activator.CreateInstance(property.PropertyType)! : "";
+
+                if (!value.Equals(defaultValue))
+                {
+                    writer.WriteLine($"{property.Name}: {value}");
+                }
+            }
+        }
+
+        private static ConsoleTable CreateConsoleTable(Warehouse foundGoods)
+        {
+            var table = new ConsoleTable("№", "Category", "Name of a good", "Size", "Color", "Brand", "Model", "Company",
+                "Unit of measure", "Unit of price", "Amount", "Expiry date", "Date of last delivery");
+
+            int counter = 1;
+            foreach (Good item in foundGoods)
+            {
+                table.AddRow(
+                    counter++,
+                    item.Category.ToLower(),
+                    item.NameOfGood.ToLower(),
+                    item is Clothing clothingSize ? clothingSize.Size.ToLower() : "",
+                    item is Clothing clothingColor ? clothingColor.Color.ToLower() : "",
+                    item is Clothing clothingBrand ? (clothingBrand.Brand.Substring(0, 1).ToUpper() + clothingBrand.Brand.Substring(1).ToLower()) : "",
+                    item is Electronics electronicsModel ? electronicsModel.Model : "",
+                    item is Electronics electronicsCompany ? (electronicsCompany.Company.Substring(0, 1).ToUpper() + electronicsCompany.Company.Substring(1).ToLower()) : "",
+                    item.UnitOfMeasure,
+                    $"{item.UnitPrice} uah/{item.UnitOfMeasure}",
+                    item.Amount,
+                    item is Food foodExpiryDate ? foodExpiryDate.ExpiryDate.ToShortDateString() : "",
+                    item.DateOfLastDelivery);
+            }
+
+            return table;
+        }
+
+        private static void WriteGoodsTableToFile(StreamWriter writer, ConsoleTable table)
+        {
+            writer.WriteLine("\n\t\t\t\t\t\t\t\tFound goods\n");
+            writer.WriteLine(table.ToString());
+        }
+
+        private static void WriteGoodsTableToConsole(ConsoleTable table, string title)
+        {
+            Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
+            Console.WriteLine(table.ToString());
         }
 
     }
