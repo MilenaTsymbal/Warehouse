@@ -72,7 +72,7 @@
   <Class Name="Warehouse.FileWork">
     <Position X="9.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AABCAAADACCAAAAAAEgAAjAAEKAIAAAQAAAAAAAAACA=</HashCode>
+      <HashCode>AABCAQgTACCEAAAAAEAgAjAAkKAIAAAQAAAAAAAAACA=</HashCode>
       <FileName>Utilities\FileWork.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -94,7 +94,7 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAACAAAAQEAAAIAAAAAAwAAAAAAAgACAAEYGAEAAA=</HashCode>
+      <HashCode>BgAAABAAAAQEACAAAAQAAAwAkAAAAAgACAAGaAAEgAA=</HashCode>
       <FileName>Utilities\Print.cs</FileName>
     </TypeIdentifier>
   </Class>

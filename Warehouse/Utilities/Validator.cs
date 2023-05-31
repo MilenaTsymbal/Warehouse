@@ -44,7 +44,6 @@ namespace Warehouse
             }
         }
 
-        //for number that exsists in the range of excisting goods
         static public int GetTheValidationNumberOfGoods(string message, Warehouse goods)
         {
             return GetTheValidationInput(message, int.Parse, userInput =>
@@ -54,7 +53,6 @@ namespace Warehouse
         }
 
 
-        //for string inputs of characteristics
         static public string GetTheValidationGoodCharacteristic(string message)
         {
             return GetTheValidationInput(message, s => s.ToLower(), userInput =>

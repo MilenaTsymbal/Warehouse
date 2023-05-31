@@ -218,7 +218,7 @@ namespace Warehouse
                 }
                 else
                 {
-                    Print.Message(ConsoleColor.Red, $"\n No goods were found with the specified characteristics. A new file was not created.\n");
+                    Print.Message(ConsoleColor.Red, $"\n New file was not created, because no goods were found with the specified characteristics.\n");
                 }
 
             }
@@ -294,11 +294,6 @@ namespace Warehouse
             writer.WriteLine(table.ToString());
         }
 
-        private static void WriteGoodsTableToConsole(ConsoleTable table, string title)
-        {
-            Console.WriteLine($"\n\t\t\t\t\t\t\t\t{title}\n");
-            Console.WriteLine(table.ToString());
-        }
 
     }
 }

@@ -84,11 +84,13 @@ namespace Warehouse
             "7. By amount of delivered goods (to)\n" +
             "8. By date and time of last delivery of a good (in format dd.mm.yyyy hh:mm:ss) (from)\n" +
             "9. By date and time of last delivery of a good (in the format dd.mm.yyyy) (to)\n" +
-            "10.By the size of the good\n" +
-            "11.By the color of the product\n" +
-            "12.By the name of the brand of the good\n" +
-            "13.By the name of the model of the good\n" +
-            "14.By the name of the company that produces this good");
+            "10.By expiry date of a good (in the format dd.mm.yyyy) (from)" +
+            "11.By expiry date of a good (in the format dd.mm.yyyy) (to)" +
+            "12.By the size of the good\n" +
+            "13.By the color of the product\n" +
+            "14.By the name of the brand of the good\n" +
+            "15.By the name of the model of the good\n" +
+            "16.By the name of the company that produces this good");
 
             List<int> searchOptions = Validator.GetTheValidationCharacteristicsForFindingGoods("\nEnter the number / numbers of options to be used for the search: ");
 
